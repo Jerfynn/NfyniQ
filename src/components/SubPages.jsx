@@ -37,7 +37,7 @@ export const Downloads = () => {
       file: 'SonarViewer_Setup.exe',
       size: '45.4 MB',
       type: 'Setup Installer (Inno Setup)',
-      url: '/SonarViewer/SonarViewer_Setup.exe',
+      url: 'https://github.com/Jerfynn/SONAR/releases/download/v1.0.0/SonarViewer_Setup.exe',
       color: '#0078d4',
       icon: (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -55,7 +55,7 @@ export const Downloads = () => {
       file: 'sonarviewer-macos-app.zip',
       size: '34.4 MB',
       type: 'Application Bundle (.app in ZIP)',
-      url: '/SonarViewer/sonarviewer-macos-app.zip',
+      url: 'https://github.com/Jerfynn/SONAR/releases/download/v1.0.0/sonarviewer-macos-app.zip',
       color: '#0078d4',
       icon: (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
@@ -73,7 +73,7 @@ export const Downloads = () => {
       file: 'sonarviewer-linux-deb.zip',
       size: '72.7 MB',
       type: 'Debian Package (.deb in ZIP)',
-      url: '/SonarViewer/sonarviewer-linux-deb.zip',
+      url: 'https://github.com/Jerfynn/SONAR/releases/download/v1.0.0/sonarviewer-linux-deb.zip',
       color: '#0078d4',
       icon: (
         <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
