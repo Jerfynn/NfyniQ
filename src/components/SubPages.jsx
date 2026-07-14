@@ -141,8 +141,8 @@ export const Downloads = () => {
         {platforms.map((plat, i) => (
           <div
             key={i}
-            className="glass"
-            style={{ padding: '1.5rem 2rem', display: 'flex', alignItems: 'center', gap: '1.5rem', flexWrap: 'wrap', borderLeft: `4px solid ${plat.color}` }}
+            className="glass download-card"
+            style={{ borderLeft: `4px solid ${plat.color}` }}
           >
             {/* Icon */}
             <div style={{ flexShrink: 0 }}>{plat.icon}</div>
@@ -430,17 +430,15 @@ export const Services = () => {
       </div>
 
       {/* Bento Grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.25rem', gridAutoRows: 'auto' }}>
+      <div className="services-grid" style={{ gap: '1.25rem' }}>
         {filtered.map((svc, idx) => {
-          const isLarge = svc.size === 'large';
           const isHovered = hovered === svc.id;
           return (
             <div
               key={svc.id}
               style={{
-                gridColumn: isLarge ? 'span 2' : 'span 1',
-                background: isHovered ? svc.bg : '#ffffff',
-                border: `1px solid ${isHovered ? svc.border : 'rgba(13,27,42,0.08)'}`,
+                background: isHovered ? svc.bg : 'var(--bg-secondary)',
+                border: `1px solid ${isHovered ? svc.border : 'var(--border-muted)'}`,
                 borderRadius: '14px',
                 padding: '1.75rem',
                 cursor: 'default',
@@ -449,6 +447,9 @@ export const Services = () => {
                 boxShadow: isHovered ? `0 12px 40px ${svc.color}18` : '0 1px 4px rgba(13,27,42,0.04)',
                 position: 'relative',
                 overflow: 'hidden',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
               }}
               onMouseEnter={() => setHovered(svc.id)}
               onMouseLeave={() => setHovered(null)}
@@ -467,7 +468,7 @@ export const Services = () => {
               </div>
 
               {/* Title */}
-              <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: '800', fontSize: isLarge ? '1.4rem' : '1.1rem', color: '#0d1b2a', lineHeight: '1.2', marginBottom: '0.3rem' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: '800', fontSize: '1.2rem', color: 'var(--text-primary)', lineHeight: '1.2', marginBottom: '0.3rem' }}>
                 {svc.title}
               </h3>
               <p style={{ fontSize: '0.75rem', color: svc.color, fontWeight: '600', marginBottom: '0.9rem', letterSpacing: '0.02em' }}>
@@ -475,25 +476,23 @@ export const Services = () => {
               </p>
 
               {/* Description */}
-              <p style={{ fontSize: '0.85rem', color: '#4b5563', lineHeight: '1.65', marginBottom: '1.25rem' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: '1.65', marginBottom: '1.25rem' }}>
                 {svc.desc}
               </p>
 
               {/* Feature list */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1rem' }}>
                 {svc.features.map((f, fi) => (
-                  <span key={fi} style={{ fontSize: '0.72rem', fontWeight: '600', color: isHovered ? svc.color : '#6b7280', background: isHovered ? `${svc.color}08` : 'rgba(13,27,42,0.04)', border: `1px solid ${isHovered ? svc.color + '22' : 'rgba(13,27,42,0.07)'}`, padding: '3px 9px', borderRadius: '20px', transition: 'all 0.2s' }}>
+                  <span key={fi} style={{ fontSize: '0.72rem', fontWeight: '600', color: isHovered ? svc.color : 'var(--text-secondary)', background: isHovered ? `${svc.color}08` : 'var(--bg-tertiary)', border: `1px solid ${isHovered ? svc.color + '22' : 'var(--border-muted)'}`, padding: '3px 9px', borderRadius: '20px', transition: 'all 0.2s' }}>
                     {f}
                   </span>
                 ))}
               </div>
 
-              {/* Large card watermark icon */}
-              {isLarge && (
-                <div style={{ position: 'absolute', bottom: '-10px', right: '-10px', opacity: 0.04, pointerEvents: 'none', transform: 'scale(3.5)', transformOrigin: 'bottom right' }}>
-                  {svc.icon}
-                </div>
-              )}
+              {/* Watermark icon */}
+              <div style={{ position: 'absolute', bottom: '-8px', right: '-8px', opacity: 0.03, pointerEvents: 'none', transform: 'scale(2.2)', transformOrigin: 'bottom right' }}>
+                {svc.icon}
+              </div>
             </div>
           );
         })}
@@ -1018,10 +1017,10 @@ for i in range(RINGDOWN_SKIP, len(samples)):
       </div>
 
       <div style={docThemeStyle}>
-        <div className="doc-layout" style={{ gridTemplateColumns: '240px 1fr', gap: 0 }}>
+        <div className="doc-layout" style={{ gap: 0 }}>
 
           {/* Sidebar */}
-          <div className="doc-sidebar" style={{ borderRight: `1px solid ${dm ? 'rgba(255,255,255,0.07)' : 'rgba(13,27,42,0.07)'}`, padding: '1.25rem', background: dm ? '#0e172a' : '#f8fafc', minHeight: '560px' }}>
+          <div className="doc-sidebar">
             <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
               <Search size={13} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)' }} />
               <input
@@ -1056,7 +1055,7 @@ for i in range(RINGDOWN_SKIP, len(samples)):
           </div>
 
           {/* Content */}
-          <div className="doc-content" style={{ padding: '2rem 2.5rem', background: dm ? '#090d16' : '#ffffff', minHeight: '560px', overflowY: 'auto' }}>
+          <div className="doc-content">
             {renderDocContent()}
           </div>
 
@@ -1212,9 +1211,9 @@ export const About = () => {
       </div>
 
       {/* ── Stat Strip ─────────────────────────────────────────── */}
-      <div className="glass" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', marginBottom: '4rem', padding: '1.5rem 0', overflow: 'hidden' }}>
+      <div className="glass about-stats-grid">
         {stats.map((s, i) => (
-          <div key={i} style={{ textAlign: 'center', padding: '0.75rem 1rem', borderRight: i < stats.length - 1 ? '1px solid rgba(13,27,42,0.07)' : 'none' }}>
+          <div key={i} className="about-stat-item">
             <div style={{ fontFamily: 'var(--font-display)', fontSize: '2rem', fontWeight: '800', color: '#1e3a8a', lineHeight: '1', marginBottom: '4px' }}>{s.value}</div>
             <div style={{ fontSize: '0.72rem', color: '#6b7280', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.05em', lineHeight: '1.3' }}>{s.label}</div>
           </div>
@@ -1228,22 +1227,22 @@ export const About = () => {
           <p style={{ color: '#6b7280', fontSize: '0.88rem' }}>From first commit to field deployment</p>
         </div>
 
-        <div style={{ position: 'relative' }}>
+        <div className="timeline-container">
           {/* Centre vertical spine */}
-          <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: '2px', background: 'linear-gradient(180deg, #1e3a8a 0%, #0369a1 50%, rgba(30,58,138,0.1) 100%)', transform: 'translateX(-50%)', zIndex: 0 }} />
+          <div className="timeline-line" />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
             {timeline.map((item, idx) => {
-              const isLeft = idx % 2 === 0;
-              const isActive = activeNode === idx;
-              return (
+               const isLeft = idx % 2 === 0;
+               const isActive = activeNode === idx;
+               return (
                 <div
                   key={idx}
-                  style={{ display: 'grid', gridTemplateColumns: '1fr 60px 1fr', alignItems: 'start', position: 'relative', cursor: 'pointer' }}
+                  className="timeline-item"
                   onClick={() => setActiveNode(isActive ? null : idx)}
                 >
-                  {/* Left slot */}
-                  <div style={{ gridColumn: isLeft ? '1' : '3', gridRow: '1', paddingRight: isLeft ? '1.5rem' : 0, paddingLeft: isLeft ? 0 : '1.5rem', textAlign: isLeft ? 'right' : 'left' }}>
+                  {/* Card wrapper slot */}
+                  <div className={`timeline-card-wrapper ${isLeft ? 'left' : 'right'}`}>
                     <div
                       className="glass"
                       style={{
@@ -1253,10 +1252,9 @@ export const About = () => {
                         boxShadow: isActive ? `0 8px 30px ${item.color}22` : undefined,
                         transition: 'all 0.25s cubic-bezier(0.16,1,0.3,1)',
                         transform: isActive ? 'translateY(-2px)' : 'none',
-                        textAlign: isLeft ? 'right' : 'left',
                       }}
                     >
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem', justifyContent: isLeft ? 'flex-end' : 'flex-start', flexWrap: 'wrap' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '0.5rem', flexWrap: 'wrap' }}>
                         <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', background: `${item.color}10`, color: item.color, border: `1px solid ${item.color}30`, padding: '2px 8px', borderRadius: '4px', fontWeight: '700' }}>
                           {item.year}
                         </span>
@@ -1275,10 +1273,10 @@ export const About = () => {
                   </div>
 
                   {/* Empty opposite slot */}
-                  <div style={{ gridColumn: isLeft ? '3' : '1', gridRow: '1' }} />
+                  <div className={`timeline-empty-slot ${isLeft ? 'left' : 'right'}`} />
 
                   {/* Centre dot */}
-                  <div style={{ gridColumn: '2', gridRow: '1', display: 'flex', justifyContent: 'center', alignItems: 'flex-start', paddingTop: '1.4rem', zIndex: 1 }}>
+                  <div className="timeline-dot-wrapper">
                     <div style={{
                       width: '18px', height: '18px', borderRadius: '50%',
                       background: isActive ? item.color : '#ffffff',
