@@ -164,7 +164,7 @@ export const Services = () => {
 // MODERN DOCUMENTATION PAGE (Supports multiple software products)
 export const Documentation = () => {
   const [search, setSearch] = useState('');
-  const [activeTopic, setActiveTopic] = useState('install');
+  const [activeTopic, setActiveTopic] = useState('sonar-manual');
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
@@ -176,11 +176,11 @@ export const Documentation = () => {
   }, []);
 
   const docTopics = [
-    // Sonar Viewer
-    { id: 'install', label: 'Core Installation', category: 'Sonar Viewer' },
-    { id: 'transducer', label: 'Transducer Setup', category: 'Sonar Viewer' },
-    { id: 'ping-api', label: 'Hydrophone Ping API', category: 'Sonar Viewer' },
-    { id: 'filters', label: 'Acoustic Filters CLI', category: 'Sonar Viewer' },
+    // Sonar Viewer / Ping Viewer
+    { id: 'sonar-manual', label: 'Ping Viewer User Manual', category: 'Sonar Viewer' },
+    { id: 'sonar-transducer', label: 'Transducer Calibration', category: 'Sonar Viewer' },
+    { id: 'sonar-api', label: 'Hydrophone Ping API', category: 'Sonar Viewer' },
+    { id: 'sonar-filters', label: 'Acoustic Filters CLI', category: 'Sonar Viewer' },
 
     // AI Embedded Studio
     { id: 'ai-studio-intro', label: 'Studio Overview', category: 'AI Embedded Studio' },
@@ -188,11 +188,11 @@ export const Documentation = () => {
     { id: 'ai-studio-deploy', label: 'Board Deployment', category: 'AI Embedded Studio' },
 
     // NfynDown
-    { id: 'nfyndown-intro', label: 'Downloader Guide', category: 'NfynDown' },
+    { id: 'nfyndown-manual', label: 'NfynDown User Manual', category: 'NfynDown' },
     { id: 'nfyndown-pipeline', label: 'Parallel Pipelines', category: 'NfynDown' },
 
     // NfyniQ Music
-    { id: 'youtify-manual', label: 'User Manual', category: 'NfyniQ Music' }
+    { id: 'youtify-manual', label: 'NfyniQ Music User Manual', category: 'NfyniQ Music' }
   ];
 
   const filteredTopics = docTopics.filter(t => 
@@ -202,12 +202,124 @@ export const Documentation = () => {
 
   const renderDocContent = () => {
     switch (activeTopic) {
-      // --- Sonar Viewer ---
-      case 'transducer':
+      // ==========================================
+      // SONAR VIEWER / PING VIEWER MANUALS
+      // ==========================================
+      case 'sonar-manual':
         return (
           <>
-            <h3 className="doc-section-title">Transducer Configuration</h3>
-            <p>Connect your sub-sea transducer arrays to the receiver node via serial USB interfaces.</p>
+            <h3 className="doc-section-title">Ping Viewer Sonar Application — User Manual</h3>
+            <p>A modern desktop workstation built with <strong>Qt for Python (PySide6)</strong> and the <strong>Blue Robotics brping library</strong> designed for real-time acoustic visualization, transducer control, obstacle detection, and CSV data logging from scanning sonars (such as the Blue Robotics Ping360).</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>1. System Requirements & Launch</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Operating System:</strong> Windows 10/11 (or Linux / macOS with Qt6 support)</li>
+              <li><strong>Python Runtime:</strong> Python 3.10 or higher (recommended: Python 3.13)</li>
+              <li><strong>Core Dependencies:</strong> <code>PySide6</code>, <code>brping</code></li>
+            </ul>
+            <p><strong>Starting the Application:</strong></p>
+            <pre className="doc-code-block">
+              {`# Launch via terminal or PowerShell in PingViewer directory:
+$ python main.py`}
+            </pre>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>2. Device Discovery & Connection</h4>
+            <p>Upon launching, the <strong>Discovery Dashboard</strong> appears:</p>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Discovered Devices:</strong> Devices discovered via UDP network broadcast appear as clickable cards. Click <strong>Connect</strong> on any card.</li>
+              <li><strong>Manual IP Connection:</strong> Enter your Sonar's IP address (e.g. <code>169.254.106.152</code>) and UDP Port (default: <code>12345</code>), then click <strong>Connect Manually</strong>.</li>
+              <li><strong>Rescan:</strong> Click <strong>Refresh Scan</strong> to broadcast discovery packets across the local subnet.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>3. Radar Canvas & Viewport Navigation</h4>
+            <p>Once connected, the screen transitions to the high-resolution polar radar visualizer:</p>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>360° Polar Display:</strong> Centered radar grid with concentric range rings showing acoustic distance in meters.</li>
+              <li><strong>Cyan Sweep Needle:</strong> Bright indicator line displaying the exact real-time orientation of the sonar transducer.</li>
+              <li><strong>Compass Markings:</strong> Outer cardinal (0°, 90°, 180°, 270°) and ordinal reference points.</li>
+            </ul>
+            <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(3,105,161,0.08)', textAlign: 'left' }}>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Action</th>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Gesture</th>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Zoom In / Out</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Mouse Scroll Wheel</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Zooms towards cursor location (0.5x to 5.0x).</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Pan View</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Left-Click + Drag</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Shifts the radar center across the canvas.</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Reset View</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Reset Zoom/Pan</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Resets zoom to 1.0x and re-centers the display.</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Clear Buffer</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Clear Scan Buffer</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Wipes historical echoes and restarts fresh scan accumulation.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>4. Sidebar Controls & Palettes</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Receiver Gain (0% – 100%):</strong> Adjusts acoustic sensitivity. Use lower gain in confined water tanks; higher in open ocean.</li>
+              <li><strong>Scan Range (2.0m – 30.0m):</strong> Sets maximum listening radius. Shorter ranges allow faster sweeps because acoustic transit times decrease.</li>
+              <li><strong>Color Palettes:</strong> 5 color LUTs: <em>Amber (Classic gold), Viridis (Scientific gradient), Copper (Warm bronze), Flame (Thermal contrast), Grayscale (Monochrome)</em>.</li>
+              <li><strong>Angular Resolution:</strong> Adjust step sizes: <code>0.9° (Fine/400 steps)</code>, <code>1.8° (Default/200 steps)</code>, <code>3.6° (Fast/100 steps)</code>, <code>7.2° (Max Speed/50 steps)</code>.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>5. Sector Sweep Configuration</h4>
+            <p>Constrain the transducer to scan back and forth within a target angular window:</p>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Enter <strong>Start Angle</strong> (e.g. <code>45°</code>) and <strong>End Angle</strong> (e.g. <code>225°</code>).</li>
+              <li>Click <strong>Set Sector</strong>. The motor will sweep between these limits, auto-reversing at boundaries.</li>
+              <li><em>Reset to 360°:</em> Enter Start: <code>0°</code>, End: <code>360°</code>, and click Set Sector.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>6. Obstacle Detection & Telemetry Tracking</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Ringdown Rejection:</strong> Automatically filters out the first 8% of returns to reject transducer self-pulse ringdown.</li>
+              <li><strong>Target Computation:</strong> When return density ≥ 80 (out of 255):<br />
+                <code>Obstacle Distance = (Peak Sample Index / Total Samples) * Scan Range (m)</code>
+              </li>
+              <li><strong>Status Indicator:</strong> Displays live readings such as <code>Obstacle: 4.25m | Density: 185</code> or <code>Obstacle: Clear</code>.</li>
+            </ul>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>7. CSV Recording & Screenshots</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Click <strong>🔴 Record Data</strong>. The app creates a timestamped file in <code>recordings/sonar_scan_YYYYMMDD_HHMMSS.csv</code> logging Timestamp, Heading Angle, Range, Gain, Target Distance, and 400 raw acoustic return samples.</li>
+              <li>Compatible directly with Pandas, NumPy, MATLAB, Excel, and R.</li>
+              <li>Click <strong>📷 Take Screenshot</strong> to export high-resolution PNG imagery of the active radar screen.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>8. Offline Simulator Mode</h4>
+            <p>Click <strong>Start Mock Sonar Simulator</strong> on the discovery screen to generate a virtual simulated sonar on <code>127.0.0.1:51244</code> for testing without physical underwater hardware.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>9. Troubleshooting & FAQ</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Connection Timeout:</strong> Ensure your Ethernet adapter is set to DHCP or configured with a Link-Local IP (e.g. <code>169.254.106.100</code>, Subnet <code>255.255.0.0</code>).</li>
+              <li><strong>Slow Sweep Rate:</strong> Lower the scan range from 30m to 10m, or increase angular resolution to 3.6° or 7.2°.</li>
+            </ul>
+          </>
+        );
+
+      case 'sonar-transducer':
+        return (
+          <>
+            <h3 className="doc-section-title">Transducer Hardware & Frequency Setup</h3>
+            <p>Connect your sub-sea transducer arrays to the receiver node via serial USB or Ethernet interfaces.</p>
             <pre className="doc-code-block">
               {`$ agy-sonar --device /dev/ttyUSB0 --baud 115200 --frequency 33khz`}
             </pre>
@@ -217,22 +329,25 @@ export const Documentation = () => {
             </pre>
           </>
         );
-      case 'ping-api':
+
+      case 'sonar-api':
         return (
           <>
-            <h3 className="doc-section-title">Hydrophone Ping API</h3>
-            <p>The Sonar Viewer client exposes a local WebSocket server streaming transducer echo pulses in real-time.</p>
+            <h3 className="doc-section-title">Hydrophone WebSocket Ping API</h3>
+            <p>Sonar Viewer exposes a local WebSocket server streaming transducer echo pulses in real-time for external tracking software.</p>
             <pre className="doc-code-block">
               {`const socket = new WebSocket('ws://localhost:8080/sonar');
 socket.onmessage = (event) => {
   const ping = JSON.parse(event.data);
+  console.log('Heading Angle: ', ping.angle);
   console.log('Target Distance (m): ', ping.distance);
   console.log('Echo Intensity: ', ping.intensity);
 };`}
             </pre>
           </>
         );
-      case 'filters':
+
+      case 'sonar-filters':
         return (
           <>
             <h3 className="doc-section-title">Acoustic Filters CLI</h3>
@@ -243,19 +358,10 @@ $ agy-sonar --clear-clutter --smooth 3`}
             </pre>
           </>
         );
-      case 'install':
-        return (
-          <>
-            <h3 className="doc-section-title">Core Installation</h3>
-            <p>Configure the global NfyniQ Sonar CLI utility client to calibrate marine sensors and stream acoustics data.</p>
-            <pre className="doc-code-block">
-              {`$ npm install -g @nfyniq/sonar-cli
-$ agy-sonar --help`}
-            </pre>
-          </>
-        );
 
-      // --- AI Embedded Studio ---
+      // ==========================================
+      // AI EMBEDDED STUDIO MANUALS
+      // ==========================================
       case 'ai-studio-intro':
         return (
           <>
@@ -267,6 +373,7 @@ $ agy-sonar --help`}
             </pre>
           </>
         );
+
       case 'ai-studio-quant':
         return (
           <>
@@ -277,6 +384,7 @@ $ agy-sonar --help`}
             </pre>
           </>
         );
+
       case 'ai-studio-deploy':
         return (
           <>
@@ -288,21 +396,112 @@ $ agy-sonar --help`}
           </>
         );
 
-      // --- NfynDown ---
-      case 'nfyndown-intro':
+      // ==========================================
+      // NFYNDOWN MANUALS
+      // ==========================================
+      case 'nfyndown-manual':
         return (
           <>
-            <h3 className="doc-section-title">NfynDown Downloader Guide</h3>
-            <p>NfynDown is a high-speed, parallel segmented utility client built to accelerate downloads for large firmware updates, bathymetry map datasets, and media files.</p>
-            <pre className="doc-code-block">
-              {`$ nfyndown --url https://firmware.nfyniq.com/firmware_v2.bin --threads 8`}
-            </pre>
+            <h3 className="doc-section-title">NfynDown — User Manual</h3>
+            <p>NfynDown is a lightweight desktop application for downloading media from popular platforms such as <strong>YouTube, Instagram, TikTok, Twitter/X, and Facebook</strong>. It provides a simple graphical interface built with pywebview and utilizes yt-dlp under the hood.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Installation & First Launch</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Download the installer (or standalone executable) from the Downloads page.</li>
+              <li>Run the application — it will automatically detect and configure bundled FFmpeg/FFprobe binaries.</li>
+              <li>The first launch takes a few seconds while verifying dependencies and local configurations.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Main Interface Elements</h4>
+            <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(3,105,161,0.08)', textAlign: 'left' }}>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Section</th>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Description</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>URL Input (Top)</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Paste a video/post URL you wish to download.</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Analyze Button</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Retrieves video title, duration, available resolutions, and thumbnail.</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Format Selector</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Choose Video (MP4), Audio (MP3), or Image.</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Resolution Selector</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Pick desired quality (e.g. 1080p, 720p, 480p).</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)', fontWeight: '600' }}>Settings (⚙️)</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Import cookies, select custom download directories, and configure themes.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Step-by-Step Workflows</h4>
+            <h5 style={{ fontWeight: '600', marginBottom: '0.25rem' }}>1. Download a YouTube Video</h5>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Copy the YouTube video or playlist URL.</li>
+              <li>Paste into URL field and click <strong>Analyze Link</strong>.</li>
+              <li>Choose <strong>Video (MP4)</strong> and desired resolution, then click <strong>Download</strong>.</li>
+              <li>Files save automatically to <code>%USERPROFILE%\Downloads\NfynDown</code>.</li>
+            </ol>
+
+            <h5 style={{ fontWeight: '600', marginBottom: '0.25rem' }}>2. Download an Instagram Reel / Post</h5>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Copy the Instagram Reel or Post link.</li>
+              <li>If authentication fails, export your cookies using a browser extension (like <em>Get cookies.txt LOCALLY</em>) to <code>%LOCALAPPDATA%\NfynDown\cookies.txt</code>.</li>
+              <li>Click <strong>Analyze</strong> and download.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Keyboard Shortcut Cheat-Sheet</h4>
+            <div style={{ overflowX: 'auto', marginBottom: '1.5rem' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                <thead>
+                  <tr style={{ background: 'rgba(3,105,161,0.08)', textAlign: 'left' }}>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Action</th>
+                    <th style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Keyboard Shortcut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Focus URL Box</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}><code>Ctrl + L</code></td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Analyze URL</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}><code>Enter</code> (in URL box)</td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Start Download</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}><code>Ctrl + D</code></td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Open Settings</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}><code>Ctrl + S</code></td>
+                  </tr>
+                  <tr>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}>Cancel Download</td>
+                    <td style={{ padding: '8px 12px', border: '1px solid rgba(13,27,42,0.1)' }}><code>Esc</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </>
         );
+
       case 'nfyndown-pipeline':
         return (
           <>
-            <h3 className="doc-section-title">Parallel Pipelines</h3>
+            <h3 className="doc-section-title">Parallel Pipelines & Chunk Tuning</h3>
             <p>Fine-tune download pipelines by tweaking thread count, chunk segment sizes, and retry limits for low-bandwidth environments.</p>
             <pre className="doc-code-block">
               {`$ nfyndown --url https://data.niot.res.in/bathymetry.db --threads 16 --chunk-size 4M --retries 5`}
@@ -310,7 +509,9 @@ $ agy-sonar --help`}
           </>
         );
 
-      // --- NfyniQ Music (Youtify) ---
+      // ==========================================
+      // NFYNIQ MUSIC (YOUTIFY) MANUALS
+      // ==========================================
       case 'youtify-manual':
         return (
           <>
@@ -453,15 +654,12 @@ $ agy-sonar --help`}
             </ul>
           </>
         );
+
       default:
         return (
           <>
-            <h3 className="doc-section-title">Core Installation</h3>
-            <p>Configure the global NfyniQ Sonar CLI utility client to calibrate marine sensors and stream acoustics data.</p>
-            <pre className="doc-code-block">
-              {`$ npm install -g @nfyniq/sonar-cli
-$ agy-sonar --help`}
-            </pre>
+            <h3 className="doc-section-title">Ping Viewer Sonar Application — User Manual</h3>
+            <p>Select a topic from the sidebar to inspect user manuals, setup guides, and technical references for NfyniQ products.</p>
           </>
         );
     }

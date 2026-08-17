@@ -1,14 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import CanvasBackground from './components/CanvasBackground';
-import SonarViewer from './components/SonarViewer';
+import HomePage from './components/HomePage';
+import ProductsPage from './components/ProductsPage';
+import ServicesPage from './components/ServicesPage';
+import SolutionsPage from './components/SolutionsPage';
+import AboutPage from './components/AboutPage';
 import Contact from './components/Contact';
-import { Downloads, Documentation, Showcase, Blog, About, Services } from './components/SubPages';
-import { Terminal, ShieldCheck, Heart, Menu, X, CheckCircle, Info, FileText, Download } from 'lucide-react';
+import ProductDetailModal from './components/ProductDetailModal';
+import { Downloads, Documentation } from './components/SubPages';
+import { productsData } from './data/productsData';
+import { 
+  Terminal, 
+  Menu, 
+  X, 
+  ArrowRight, 
+  Globe, 
+  Mail, 
+  ShieldCheck, 
+  Layers, 
+  Cpu, 
+  Download, 
+  BookOpen, 
+  Sparkles,
+  ExternalLink
+} from 'lucide-react';
 import './App.css';
 
 function App() {
-  const [activeTab, setActiveTab] = useState('hub'); // 'hub', 'services', 'downloads', 'documentation', 'about', 'contact'
+  // Navigation tabs: 'home', 'products', 'services', 'solutions', 'downloads', 'documentation', 'about', 'contact'
+  const [activeTab, setActiveTab] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const handleNav = (e) => {
@@ -24,119 +46,46 @@ function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleSelectProductById = (prodId) => {
+    const found = productsData.find(p => p.id === prodId);
+    if (found) {
+      setSelectedProduct(found);
+    }
+  };
+
   const renderContent = () => {
     switch (activeTab) {
+      case 'products':
+        return (
+          <ProductsPage 
+            onSelectProduct={(prod) => setSelectedProduct(prod)} 
+            onNavigateTab={navigateTo} 
+          />
+        );
       case 'services':
-        return <Services />;
+        return <ServicesPage onNavigateTab={navigateTo} />;
+      case 'solutions':
+        return (
+          <SolutionsPage 
+            onNavigateTab={navigateTo} 
+            onSelectProductById={handleSelectProductById} 
+          />
+        );
       case 'downloads':
         return <Downloads />;
       case 'documentation':
         return <Documentation />;
       case 'about':
-        return <About />;
+        return <AboutPage onNavigateTab={navigateTo} />;
       case 'contact':
         return <Contact />;
-      case 'hub':
+      case 'home':
       default:
         return (
-          <div className="showcase-container">
-            {/* Hero Section */}
-            <section className="hero-section" style={{ padding: '2rem 1rem 1.5rem' }}>
-              <div className="badge" style={{ background: 'rgba(13, 148, 136, 0.06)', border: '1px solid rgba(13, 148, 136, 0.15)', color: 'var(--teal)' }}>
-                <span className="badge-dot" style={{ background: 'var(--teal)', boxShadow: '0 0 8px var(--teal)' }}></span>
-                <span>Sonar Suite Release v1.2.3</span>
-              </div>
-              <h1 className="hero-title" style={{ fontSize: '3.2rem', marginBottom: '1rem' }}>
-                NfyniQ <span className="accent-text" style={{ background: 'linear-gradient(135deg, var(--teal) 20%, var(--cyan) 80%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Sonar Viewer</span>
-              </h1>
-              <p className="hero-subtitle" style={{ marginBottom: '2rem' }}>
-                Professional hydro-acoustic bathymetric scanning, sub-sea pipe mapping, and real-time transducer tracking software compiled for multi-architecture endpoints.
-              </p>
-            </section>
-
-            {/* DEDICATED HERO MOCKUP SCREEN */}
-            <div className="glass" style={{ padding: '4px', borderRadius: '16px', background: 'rgba(15,23,42,0.02)', border: '1px solid rgba(15,23,42,0.06)' }}>
-              {/* App Frame Header */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 16px', background: '#ffffff', borderRadius: '12px 12px 0 0', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
-                <div style={{ display: 'flex', gap: '6px' }}>
-                  <span style={{ width: '10px', height: '10px', background: '#ef4444', borderRadius: '50%' }}></span>
-                  <span style={{ width: '10px', height: '10px', background: '#eab308', borderRadius: '50%' }}></span>
-                  <span style={{ width: '10px', height: '10px', background: '#22c55e', borderRadius: '50%' }}></span>
-                </div>
-                <span style={{ fontSize: '0.75rem', fontFamily: 'var(--font-mono)', fontWeight: '600', color: 'var(--text-secondary)' }}>
-                  NfyniQ_Sonar_Viewer_Suite.app
-                </span>
-                <div style={{ width: '30px' }}></div>
-              </div>
-
-              {/* Embedded Live Simulator */}
-              <div style={{ padding: '1.25rem', background: 'var(--bg-primary)', borderRadius: '0 0 12px 12px' }}>
-                <SonarViewer />
-              </div>
-            </div>
-
-            {/* TECHNICAL DETAILS GRID */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
-              
-              {/* Key Features */}
-              <div className="glass" style={{ padding: '1.75rem' }}>
-                <h3 className="panel-title" style={{ '--panel-accent': 'var(--teal)' }}>
-                  <CheckCircle size={16} /> Key Features
-                </h3>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingLeft: '1.25rem', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
-                  <li>Circular 360° hydro-acoustic echo scan scopes.</li>
-                  <li>Receiver gain & pulse frequency calibrations.</li>
-                  <li>Spatial distance measurement overlays (100m-1000m).</li>
-                  <li>Live digital wave filters to cancel sea ripples.</li>
-                </ul>
-              </div>
-
-              {/* System Requirements */}
-              <div className="glass" style={{ padding: '1.75rem' }}>
-                <h3 className="panel-title" style={{ '--panel-accent': 'var(--teal)' }}>
-                  <Info size={16} /> Requirements
-                </h3>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  <div><strong>OS Compatibility:</strong> Windows 10/11, macOS 12+, Linux Debian/RedHat</div>
-                  <div><strong>Transducer:</strong> Serial USB hydropone module interface</div>
-                  <div><strong>Processor:</strong> Dual-Core 2.0 GHz minimum</div>
-                  <div><strong>RAM Size:</strong> 4 GB RAM (8 GB recommended)</div>
-                </div>
-              </div>
-
-              {/* Release Notes */}
-              <div className="glass" style={{ padding: '1.75rem' }}>
-                <h3 className="panel-title" style={{ '--panel-accent': 'var(--teal)' }}>
-                  <FileText size={16} /> Release Notes (v1.2.3)
-                </h3>
-                <ul style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '1.25rem', fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-                  <li>Configure digital noise filters to filter sea surface clutter.</li>
-                  <li>Support variable distance layout concentric grids.</li>
-                  <li>Optimize target echo fade persistence canvas loops.</li>
-                </ul>
-              </div>
-
-              {/* Quick Docs Uplink */}
-              <div className="glass" style={{ padding: '1.75rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                <h3 className="panel-title" style={{ '--panel-accent': 'var(--teal)' }}>
-                  Deploy Interface
-                </h3>
-                <button className="download-btn" style={{ width: '100%', background: 'var(--teal)' }} onClick={() => navigateTo('downloads')}>
-                  <Download size={14} /> Download Platform Package
-                </button>
-                
-                <div style={{ background: 'var(--bg-tertiary)', padding: '10px', borderRadius: '8px', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', border: '1px solid rgba(0,0,0,0.05)', color: 'var(--text-primary)' }}>
-                  $ npm install -g @nfyniq/sonar-cli
-                </div>
-              </div>
-
-            </div>
-
-            {/* Showcase Section */}
-            <div style={{ marginTop: '2.5rem' }}>
-              <Services />
-            </div>
-          </div>
+          <HomePage 
+            onNavigateTab={navigateTo} 
+            onSelectProduct={(prod) => setSelectedProduct(prod)} 
+          />
         );
     }
   };
@@ -146,21 +95,33 @@ function App() {
       <CanvasBackground />
 
       <div className="app-container">
-        {/* Navigation Bar */}
+        {/* Sticky Modern Navbar */}
         <header className="navbar">
-          <div className="nav-brand-area">
-            <div className="nav-logo" onClick={() => navigateTo('hub')}>
-              <Terminal className="nav-logo-icon" style={{ stroke: 'var(--teal)' }} />
-              <span>NfyniQ</span>
+          <div className="nav-brand-area" onClick={() => navigateTo('home')}>
+            <div className="nav-logo">
+              <div className="nav-logo-icon-box">
+                <Terminal className="nav-logo-icon" />
+              </div>
+              <div className="nav-logo-text-group">
+                <span className="brand-name">NfyniQ</span>
+                <span className="brand-sub">Technologies</span>
+              </div>
             </div>
           </div>
 
           <nav className="nav-links">
             <span
-              className={`nav-link ${activeTab === 'hub' ? 'active' : ''}`}
-              onClick={() => navigateTo('hub')}
+              className={`nav-link ${activeTab === 'home' ? 'active' : ''}`}
+              onClick={() => navigateTo('home')}
             >
               Home
+            </span>
+
+            <span
+              className={`nav-link ${activeTab === 'products' ? 'active' : ''}`}
+              onClick={() => navigateTo('products')}
+            >
+              Products
             </span>
 
             <span
@@ -168,6 +129,13 @@ function App() {
               onClick={() => navigateTo('services')}
             >
               Services
+            </span>
+
+            <span
+              className={`nav-link ${activeTab === 'solutions' ? 'active' : ''}`}
+              onClick={() => navigateTo('solutions')}
+            >
+              Solutions
             </span>
 
             <span
@@ -199,25 +167,42 @@ function App() {
             </span>
           </nav>
 
-          <button className="cta-button" style={{ color: 'var(--teal)', borderColor: 'rgba(13,148,136,0.2)', background: 'rgba(13,148,136,0.08)' }} onClick={() => navigateTo('contact')}>
-            <ShieldCheck size={16} />
-            <span>Secure Tunnel</span>
-          </button>
+          <div className="nav-right-actions">
+            <button className="nav-get-in-touch-btn" onClick={() => navigateTo('contact')}>
+              <span>Get in Touch</span>
+              <ArrowRight size={14} />
+            </button>
 
-          {/* Mobile menu trigger */}
-          <button className="mobile-nav-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
-          </button>
+            {/* Mobile menu trigger button */}
+            <button 
+              className="mobile-nav-toggle" 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </header>
 
         {/* Mobile Navigation Drawer */}
         <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'open' : ''}`}>
-          <span className="nav-link" onClick={() => navigateTo('hub')}>Home</span>
-          <span className="nav-link" onClick={() => navigateTo('services')}>Services</span>
-          <span className="nav-link" onClick={() => navigateTo('downloads')}>Downloads</span>
-          <span className="nav-link" onClick={() => navigateTo('documentation')}>Documentation</span>
-          <span className="nav-link" onClick={() => navigateTo('about')}>About</span>
-          <span className="nav-link" onClick={() => navigateTo('contact')}>Contact</span>
+          <div className="mobile-drawer-links">
+            <span className={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => navigateTo('home')}>Home</span>
+            <span className={`mobile-nav-item ${activeTab === 'products' ? 'active' : ''}`} onClick={() => navigateTo('products')}>Products</span>
+            <span className={`mobile-nav-item ${activeTab === 'services' ? 'active' : ''}`} onClick={() => navigateTo('services')}>Services</span>
+            <span className={`mobile-nav-item ${activeTab === 'solutions' ? 'active' : ''}`} onClick={() => navigateTo('solutions')}>Solutions</span>
+            <span className={`mobile-nav-item ${activeTab === 'downloads' ? 'active' : ''}`} onClick={() => navigateTo('downloads')}>Downloads</span>
+            <span className={`mobile-nav-item ${activeTab === 'documentation' ? 'active' : ''}`} onClick={() => navigateTo('documentation')}>Documentation</span>
+            <span className={`mobile-nav-item ${activeTab === 'about' ? 'active' : ''}`} onClick={() => navigateTo('about')}>About</span>
+            <span className={`mobile-nav-item ${activeTab === 'contact' ? 'active' : ''}`} onClick={() => navigateTo('contact')}>Contact</span>
+          </div>
+
+          <div className="mobile-drawer-footer">
+            <button className="btn-primary-accent" style={{ width: '100%', justifyContent: 'center' }} onClick={() => navigateTo('contact')}>
+              <span>Get in Touch</span>
+              <ArrowRight size={15} />
+            </button>
+          </div>
         </div>
 
         {/* Main Content Area */}
@@ -225,18 +210,105 @@ function App() {
           {renderContent()}
         </main>
 
-        {/* Footer */}
-        <footer className="footer">
-          <div className="footer-content">
-            <span className="footer-brand">NfyniQ Sonar Ecosystem</span>
-            <div className="footer-links">
-              <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); navigateTo('services'); }}>Services</a>
-              <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); navigateTo('documentation'); }}>Documentation</a>
-              <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); navigateTo('about'); }}>About</a>
-              <a href="#" className="footer-link" onClick={(e) => { e.preventDefault(); navigateTo('contact'); }}>Contact Link</a>
-              <span className="footer-link" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                Made with <Heart size={12} style={{ fill: 'var(--teal)', stroke: 'none' }} /> for marine nodes
-              </span>
+        {/* Global Reusable Product Detail Modal */}
+        {selectedProduct && (
+          <ProductDetailModal
+            product={selectedProduct}
+            onClose={() => setSelectedProduct(null)}
+            onNavigateTab={navigateTo}
+          />
+        )}
+
+        {/* Corporate Universal Footer */}
+        <footer className="footer-corporate">
+          <div className="footer-container">
+            <div className="footer-top-grid">
+              {/* Brand Col */}
+              <div className="footer-col footer-col-brand">
+                <div className="footer-logo" onClick={() => navigateTo('home')}>
+                  <Terminal size={20} className="footer-logo-icon" />
+                  <span className="footer-brand-title">NfyniQ</span>
+                </div>
+                <p className="footer-brand-bio">
+                  Engineering technology and building custom solutions across desktop software, native mobile apps, web platforms, and embedded microcontrollers.
+                </p>
+                <div className="footer-email-badge">
+                  <Mail size={13} />
+                  <a href="mailto:nfyniq@gmail.com">nfyniq@gmail.com</a>
+                </div>
+              </div>
+
+              {/* Products Col */}
+              <div className="footer-col">
+                <h4 className="footer-col-title">Products</h4>
+                <ul className="footer-links-list">
+                  {productsData.map(prod => (
+                    <li key={prod.id}>
+                      <button 
+                        className="footer-link-btn"
+                        onClick={() => setSelectedProduct(prod)}
+                      >
+                        {prod.name}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Services Col */}
+              <div className="footer-col">
+                <h4 className="footer-col-title">Services</h4>
+                <ul className="footer-links-list">
+                  <li>
+                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
+                      Web Development
+                    </button>
+                  </li>
+                  <li>
+                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
+                      Mobile Apps (Android & iOS)
+                    </button>
+                  </li>
+                  <li>
+                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
+                      Desktop Software (Qt/C++)
+                    </button>
+                  </li>
+                  <li>
+                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
+                      Custom Software & IoT Links
+                    </button>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Navigation / Resources Col */}
+              <div className="footer-col">
+                <h4 className="footer-col-title">Navigation</h4>
+                <ul className="footer-links-list">
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('solutions')}>Industry Solutions</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('downloads')}>Downloads Hub</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('documentation')}>Documentation Deck</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('about')}>About Company</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('contact')}>Contact & Quotes</button></li>
+                </ul>
+              </div>
+            </div>
+
+            {/* Bottom Copyright Strip */}
+            <div className="footer-bottom-bar">
+              <div className="footer-copyright-text">
+                © {new Date().getFullYear()} NfyniQ Technologies. All rights reserved. Built for mission-critical reliability.
+              </div>
+              <div className="footer-bottom-tags">
+                <span>Desktop</span>
+                <span>•</span>
+                <span>Mobile</span>
+                <span>•</span>
+                <span>Web</span>
+                <span>•</span>
+                <span>Embedded IoT</span>
+              </div>
             </div>
           </div>
         </footer>
