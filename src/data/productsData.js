@@ -47,7 +47,7 @@ export const productsData = [
       { name: 'macOS App (.zip)', file: 'sonarviewer-macos-app.zip', size: '36.0 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-macos-app.zip' },
       { name: 'Linux Deb (.zip)', file: 'sonarviewer-linux-deb.zip', size: '76.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-linux-deb.zip' }
     ],
-    docId: 'install'
+    docId: 'sonar-manual'
   },
   {
     id: 'ai-embedded-studio',
@@ -114,7 +114,6 @@ export const productsData = [
       'Low-bandwidth resilient downloading with aggressive chunk-level resume'
     ],
     techSpecs: {
-      'Core Engine': 'Standalone Multithreaded Python/Qt Client with Asynchronous I/O',
       'Transcoding Engine': 'FFmpeg Core with MP4/MKV/MP3/FLAC encoding pipelines',
       'Network Protocols': 'HTTP/HTTPS, HLS (m3u8), DASH, WebSocket segments',
       'Supported OS': 'Windows 10/11 (x64 Standalone Executable)',
@@ -123,7 +122,7 @@ export const productsData = [
     downloads: [
       { name: 'Windows Standalone Executable (.exe)', file: 'NfynDown.exe', size: '54.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfynDown.exe' }
     ],
-    docId: 'nfyndown-intro'
+    docId: 'nfyndown-manual'
   },
   {
     id: 'nfyniq-music',

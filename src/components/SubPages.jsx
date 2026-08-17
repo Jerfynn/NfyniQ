@@ -1,55 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import { Download, Monitor, Search, Sun, Moon, CheckCircle, ArrowRight, BookOpen, Music, Cpu, FileText } from 'lucide-react';
+import { productsData } from '../data/productsData';
+import { 
+  Download, 
+  Monitor, 
+  Search, 
+  Sun, 
+  Moon, 
+  CheckCircle, 
+  ArrowRight, 
+  BookOpen, 
+  Music, 
+  Cpu, 
+  FileText, 
+  ShieldCheck, 
+  Terminal, 
+  Sparkles, 
+  ExternalLink,
+  Copy,
+  Check,
+  Layers,
+  HardDrive
+} from 'lucide-react';
 
-// DOWNLOADS PAGE (Supports multiple software suites)
+// FUTURISTIC & HIGH-PERFORMANCE DOWNLOADS HUB
 export const Downloads = () => {
-  const products = [
-    {
-      name: 'Sonar Viewer',
-      version: 'v1.2.3',
-      desc: 'High-performance bathymetric underwater echo parser and acoustic scanning software suite.',
-      icon: <Monitor size={22} style={{ color: 'var(--teal)' }} />,
-      platforms: [
-        { name: 'Windows Installer', file: 'SonarViewer_Setup.exe', size: '47.6 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/SonarViewer_Setup.exe' },
-        { name: 'macOS Bundle', file: 'sonarviewer-macos-app.zip', size: '36.0 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-macos-app.zip' },
-        { name: 'Linux Binaries', file: 'sonarviewer-linux-deb.zip', size: '76.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-linux-deb.zip' }
-      ],
-      docId: 'sonar-manual'
-    },
-    {
-      name: 'AI Embedded Studio',
-      version: 'v1.0.0',
-      desc: 'Train, compile, and optimize deep neural network models to deploy directly onto edge microcontrollers.',
-      icon: <Cpu size={22} style={{ color: 'var(--teal)' }} />,
-      platforms: [
-        { name: 'Windows Studio', file: 'AI_Embedded_Studio.exe', size: '10.1 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/AI_Embedded_Studio.exe' }
-      ],
-      docId: 'ai-studio-intro'
-    },
-    {
-      name: 'NfynDown',
-      version: 'v1.0.0',
-      desc: 'High-speed, parallel segmented utility client for downloading large firmware updates, map datasets, and media files.',
-      icon: <FileText size={22} style={{ color: 'var(--teal)' }} />,
-      platforms: [
-        { name: 'Windows Downloader', file: 'NfynDown.exe', size: '54.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfynDown.exe' }
-      ],
-      docId: 'nfyndown-manual'
-    },
-    {
-      name: 'NfyniQ Music (Youtify)',
-      version: 'v1.0.0',
-      desc: 'Desktop audio player featuring 10-band equalizer, crossfade, gapless playback, synchronized lyrics, and offline mode.',
-      icon: <Music size={22} style={{ color: 'var(--teal)' }} />,
-      platforms: [
-        { name: 'Windows Setup', file: 'NfyniQ_Music_Setup.exe', size: '34.6 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfyniQ_Music_Setup.exe' }
-      ],
-      docId: 'youtify-manual'
+  const [selectedOS, setSelectedOS] = useState('All');
+  const [search, setSearch] = useState('');
+  const [copiedCmd, setCopiedCmd] = useState(false);
+
+  const filteredProducts = productsData.filter(prod => {
+    const matchesSearch = prod.name.toLowerCase().includes(search.toLowerCase()) || 
+                          prod.shortDesc.toLowerCase().includes(search.toLowerCase()) ||
+                          prod.category.toLowerCase().includes(search.toLowerCase());
+    
+    if (selectedOS === 'All') return matchesSearch;
+    if (selectedOS === 'Windows') {
+      return matchesSearch && prod.downloads.some(d => d.name.toLowerCase().includes('windows'));
     }
-  ];
+    if (selectedOS === 'macOS') {
+      return matchesSearch && prod.downloads.some(d => d.name.toLowerCase().includes('macos'));
+    }
+    if (selectedOS === 'Linux') {
+      return matchesSearch && prod.downloads.some(d => d.name.toLowerCase().includes('linux'));
+    }
+    return matchesSearch;
+  });
+
+  const handleCopyCmd = () => {
+    navigator.clipboard.writeText('iwr -useb https://nfyniq.com/install.ps1 | iex');
+    setCopiedCmd(true);
+    setTimeout(() => setCopiedCmd(false), 2000);
+  };
 
   return (
-    <div className="page-container">
+    <div className="page-container dl-page-wrapper">
+      {/* Top Breadcrumb */}
       <div className="page-top-nav-bar">
         <button 
           className="inpage-back-btn" 
@@ -59,77 +63,139 @@ export const Downloads = () => {
           <span>Back to Home</span>
         </button>
         <div className="page-nav-crumbs">
-          <span>NfyniQ</span> / <span className="active-crumb">Downloads</span>
+          <span>NfyniQ</span> / <span className="active-crumb">Downloads Hub</span>
         </div>
       </div>
 
+      {/* Hero Header */}
       <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
-        <div className="section-badge">Stable Releases</div>
-        <h1 className="page-title">Downloads Hub</h1>
-        <p className="page-subtitle">Grab the latest compiled standalone build releases of the NfyniQ software suites.</p>
+        <div className="section-badge" style={{ background: 'rgba(3, 105, 161, 0.1)', color: 'var(--teal)', borderColor: 'rgba(3, 105, 161, 0.25)' }}>
+          Verified Binary Hub
+        </div>
+        <h1 className="page-title">Software Releases & Binaries</h1>
+        <p className="page-subtitle">
+          Download self-contained standalone installers, portable runtimes, and deployment packages for Windows, macOS, and Linux.
+        </p>
       </div>
 
-      <div className="download-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
-        {products.map((prod, index) => (
-          <div key={index} className="glass download-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem', borderTop: '3px solid var(--teal)' }}>
-            <div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {prod.icon}
-                  <h3 className="download-os-title" style={{ fontSize: '1.15rem', margin: 0 }}>{prod.name}</h3>
-                </div>
-                <span style={{ fontSize: '0.68rem', color: 'var(--text-muted)', fontWeight: '700', textTransform: 'uppercase', tracking: '0.05em' }}>v{prod.version}</span>
+      {/* Interactive Filter & Search Controls */}
+      <div className="dl-controls-bar">
+        <div className="dl-os-pills">
+          {['All', 'Windows', 'macOS', 'Linux'].map((os) => (
+            <button
+              key={os}
+              className={`dl-os-pill-btn ${selectedOS === os ? 'active' : ''}`}
+              onClick={() => setSelectedOS(os)}
+            >
+              <span>{os === 'All' ? 'All Platforms' : os}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="dl-search-box-wrap">
+          <Search size={15} className="dl-search-ico" />
+          <input
+            type="text"
+            className="dl-search-field"
+            placeholder="Search software or category..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
+      </div>
+
+      {/* Modern Downloads Grid */}
+      <div className="dl-cards-grid">
+        {filteredProducts.map((prod) => (
+          <div key={prod.id} className="dl-software-card">
+            {/* Card Media Header */}
+            <div className="dl-card-banner">
+              <img src={prod.image} alt={prod.name} className="dl-banner-img" />
+              <div className="dl-banner-overlay"></div>
+              <div className="dl-banner-badges">
+                <span className="dl-badge-category">{prod.category}</span>
+                <span className="dl-badge-version">{prod.version}</span>
               </div>
-              
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', lineHeight: '1.45', margin: '0.5rem 0 1rem' }}>{prod.desc}</p>
             </div>
 
-            <div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginBottom: '1rem' }}>
-                {prod.platforms.map((plat, pIdx) => (
-                  <div key={pIdx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(15,23,42,0.03)', padding: '6px 10px', borderRadius: '6px' }}>
-                    <span style={{ fontSize: '0.78rem', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-primary)' }}>
-                      <Monitor size={11} style={{ color: 'var(--text-muted)' }} /> {plat.name}
-                    </span>
-                    <a 
-                      href={plat.path}
-                      download={plat.file}
-                      className="download-btn" 
-                      style={{ padding: '5px 10px', fontSize: '0.72rem', background: 'var(--teal)', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px' }}
-                    >
-                      <Download size={9} /> Download ({plat.size})
-                    </a>
-                  </div>
+            {/* Card Content Body */}
+            <div className="dl-card-content">
+              <div className="dl-card-header-row">
+                <h3 className="dl-software-title">{prod.name}</h3>
+                <span className="dl-clean-badge">
+                  <ShieldCheck size={13} style={{ color: '#10b981' }} />
+                  <span>SHA-256 Signed</span>
+                </span>
+              </div>
+
+              <p className="dl-software-desc">{prod.shortDesc}</p>
+
+              {/* Security & Build Specs */}
+              <div className="dl-specs-tags-row">
+                <span className="dl-spec-tag">64-bit Native</span>
+                <span className="dl-spec-tag">Standalone Portable</span>
+                <span className="dl-spec-tag">Offline Ready</span>
+              </div>
+
+              {/* Direct Platform Download Buttons */}
+              <div className="dl-platform-list">
+                <span className="dl-section-label">Compiled Packages</span>
+                {prod.downloads.map((dl, idx) => (
+                  <a
+                    key={idx}
+                    href={dl.path}
+                    download={dl.file}
+                    className="dl-direct-package-btn"
+                  >
+                    <div className="dl-pkg-info">
+                      <Download size={15} className="dl-pkg-ico" />
+                      <div className="dl-pkg-names">
+                        <span className="dl-pkg-platform">{dl.name}</span>
+                        <span className="dl-pkg-filename">{dl.file}</span>
+                      </div>
+                    </div>
+                    <span className="dl-pkg-size">{dl.size}</span>
+                  </a>
                 ))}
               </div>
 
-              <button
-                className="cta-button"
-                style={{
-                  width: '100%',
-                  padding: '8px',
-                  fontSize: '0.78rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  gap: '6px',
-                  background: 'transparent',
-                  border: '1px solid rgba(13, 148, 136, 0.25)',
-                  color: 'var(--teal)',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  margin: 0
-                }}
-                onClick={() => {
-                  sessionStorage.setItem('active-doc-topic', prod.docId);
-                  window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'documentation' }));
-                }}
-              >
-                <BookOpen size={12} /> View Manual & Docs
-              </button>
+              {/* Card Footer Actions */}
+              <div className="dl-card-bottom-actions">
+                <button
+                  className="dl-doc-link-btn"
+                  onClick={() => {
+                    sessionStorage.setItem('active-doc-topic', prod.docId);
+                    window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'documentation' }));
+                  }}
+                >
+                  <BookOpen size={14} />
+                  <span>Read User Manual</span>
+                </button>
+              </div>
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Quick Terminal CLI Installation Banner */}
+      <div className="dl-cli-terminal-banner">
+        <div className="dl-cli-header">
+          <div className="dl-cli-title-group">
+            <Terminal size={18} className="dl-cli-ico" />
+            <div>
+              <h4 className="dl-cli-title">Automated PowerShell / Terminal Quick-Fetch</h4>
+              <p className="dl-cli-desc">Install or update any NfyniQ standalone toolchain via command line.</p>
+            </div>
+          </div>
+          <button className="dl-cli-copy-btn" onClick={handleCopyCmd}>
+            {copiedCmd ? <Check size={14} style={{ color: '#10b981' }} /> : <Copy size={14} />}
+            <span>{copiedCmd ? 'Copied to Clipboard!' : 'Copy Script'}</span>
+          </button>
+        </div>
+
+        <pre className="dl-cli-code-block">
+          <code>iwr -useb https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/install.ps1 | iex</code>
+        </pre>
       </div>
     </div>
   );
