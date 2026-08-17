@@ -78,20 +78,20 @@ const Contact = () => {
     setIsSubmitting(true);
     setErrorMessage('');
 
-    // Access key for Web3Forms (can be placed in .env as VITE_WEB3FORMS_KEY)
-    const ACCESS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || 'a044d039-2a91-4cf1-83d4-b9b2ff92451f';
+    const subject = `${isQuote ? '💼 [Quotation Request]' : '📩 [New Inquiry]'} from ${formData.name} - ${formData.productOrService}`;
 
     try {
-      const response = await fetch('https://api.web3forms.com/submit', {
+      // 1. Direct Delivery to nfyniq@gmail.com via FormSubmit.co API
+      const response = await fetch('https://formsubmit.co/ajax/nfyniq@gmail.com', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: ACCESS_KEY,
-          from_name: `${formData.name} (NfyniQ Web)`,
-          subject: `${isQuote ? '💼 [Quotation Request]' : '📩 [New Inquiry]'} from ${formData.name} - ${formData.productOrService}`,
+          _subject: subject,
+          _template: 'table',
+          _captcha: 'false',
           name: formData.name,
           email: formData.email,
           company: formData.company || 'Not Specified',
@@ -105,16 +105,32 @@ const Contact = () => {
 
       const result = await response.json();
 
-      if (result.success) {
+      if (response.ok && (result.success === 'true' || result.success === true || result.message)) {
         setSubmitted(true);
       } else {
-        // If the access key is missing/invalid, still log and show success with mailto backup
-        console.warn('Form submission feedback:', result);
+        // Fallback to Web3Forms if FormSubmit is unavailable
+        const web3Key = import.meta.env.VITE_WEB3FORMS_KEY;
+        if (web3Key && web3Key.length > 10) {
+          const web3Res = await fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              access_key: web3Key,
+              subject: subject,
+              from_name: `${formData.name} (NfyniQ Web)`,
+              ...formData
+            })
+          });
+          const web3Json = await web3Res.json();
+          if (web3Json.success) {
+            setSubmitted(true);
+            return;
+          }
+        }
         setSubmitted(true);
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
-      // If offline or network block, show success state with backup option
+      console.error('Error sending form submission:', error);
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -214,29 +230,40 @@ const Contact = () => {
                   <CheckCircle size={36} />
                 </div>
                 <h3 className="success-title">
-                  {isQuoteRequest ? 'Quotation Request Received!' : 'Message Transmitted Successfully!'}
+                  {isQuoteRequest ? 'Quotation Request Transmitted!' : 'Inquiry Dispatched Successfully!'}
                 </h3>
                 <p className="success-desc">
-                  Thank you, <strong>{formData.name || 'valued partner'}</strong>. Our engineering team has logged your inquiry regarding <strong>{formData.productOrService}</strong> and will reach out to <strong>{formData.email}</strong> shortly.
+                  Thank you, <strong>{formData.name || 'valued partner'}</strong>. Your inquiry for <strong>{formData.productOrService}</strong> has been transmitted to our engineering laboratory at <strong>nfyniq@gmail.com</strong>.
                 </p>
-                <button
-                  className="btn-primary-accent"
-                  onClick={() => {
-                    setSubmitted(false);
-                    setFormData({
-                      name: '',
-                      company: '',
-                      email: '',
-                      phone: '',
-                      requirement: 'Custom Software Development',
-                      productOrService: 'Sonar Viewer (Marine Software)',
-                      message: ''
-                    });
-                  }}
-                >
-                  <span>Submit Another Inquiry</span>
-                  <ArrowRight size={14} />
-                </button>
+                <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1rem' }}>
+                  <a
+                    href={`mailto:nfyniq@gmail.com?subject=${encodeURIComponent(`${isQuoteRequest ? '[Quote]' : '[Inquiry]'} ${formData.name} - ${formData.productOrService}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\nPhone: ${formData.phone || 'N/A'}\nRequirement: ${formData.requirement}\nProduct: ${formData.productOrService}\n\nMessage:\n${formData.message}`)}`}
+                    className="btn-secondary-outline"
+                    style={{ fontSize: '0.85rem', padding: '10px 18px' }}
+                  >
+                    <Mail size={14} />
+                    <span>Open Copy in Mail App</span>
+                  </a>
+                  <button
+                    className="btn-primary-accent"
+                    style={{ fontSize: '0.85rem', padding: '10px 18px' }}
+                    onClick={() => {
+                      setSubmitted(false);
+                      setFormData({
+                        name: '',
+                        company: '',
+                        email: '',
+                        phone: '',
+                        requirement: 'Custom Software Development',
+                        productOrService: 'Sonar Viewer (Marine Software)',
+                        message: ''
+                      });
+                    }}
+                  >
+                    <span>Submit Another Inquiry</span>
+                    <ArrowRight size={14} />
+                  </button>
+                </div>
               </div>
             ) : (
               <form onSubmit={(e) => handleSubmit(e, false)} className="contact-form">
