@@ -70,6 +70,17 @@ function App() {
     };
   }, [selectedProduct]);
 
+  useEffect(() => {
+    if (mobileMenuOpen || selectedProduct) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [mobileMenuOpen, selectedProduct]);
+
   const navigateTo = (tab) => {
     setActiveTab(tab);
     setMobileMenuOpen(false);
@@ -217,7 +228,12 @@ function App() {
           </div>
         </header>
 
-        {/* Mobile Navigation Drawer */}
+        {/* Mobile Navigation Drawer & Backdrop */}
+        <div 
+          className={`mobile-menu-backdrop ${mobileMenuOpen ? 'open' : ''}`} 
+          onClick={() => setMobileMenuOpen(false)}
+          aria-hidden="true"
+        />
         <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'open' : ''}`}>
           <div className="mobile-drawer-links">
             <span className={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => navigateTo('home')}>Home</span>
