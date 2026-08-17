@@ -22,7 +22,7 @@ export const Downloads = () => {
       desc: 'Train, compile, and optimize deep neural network models to deploy directly onto edge microcontrollers.',
       icon: <Cpu size={22} style={{ color: 'var(--teal)' }} />,
       platforms: [
-        { name: 'Windows Studio', file: 'AI_Embedded_Studio.exe', size: '10.1 MB', path: '/downloads/AI_Embedded_Studio.exe' }
+        { name: 'Windows Studio', file: 'AI_Embedded_Studio.exe', size: '10.1 MB', path: 'https://github.com/Jerfynn/SONAR-NfyniQ/releases/download/v1.0.0/AI_Embedded_Studio.exe' }
       ],
       docId: 'ai-studio-intro'
     },
@@ -32,7 +32,7 @@ export const Downloads = () => {
       desc: 'High-speed, parallel segmented utility client for downloading large firmware updates, map datasets, and media files.',
       icon: <FileText size={22} style={{ color: 'var(--teal)' }} />,
       platforms: [
-        { name: 'Windows Downloader', file: 'NfynDown.exe', size: '54.2 MB', path: '/downloads/NfynDown.exe' }
+        { name: 'Windows Downloader', file: 'NfynDown.exe', size: '54.2 MB', path: 'https://github.com/Jerfynn/SONAR-NfyniQ/releases/download/v1.0.0/NfynDown.exe' }
       ],
       docId: 'nfyndown-intro'
     },
@@ -42,7 +42,7 @@ export const Downloads = () => {
       desc: 'Desktop audio player featuring 10-band equalizer, crossfade, gapless playback, synchronized lyrics, and offline mode.',
       icon: <Music size={22} style={{ color: 'var(--teal)' }} />,
       platforms: [
-        { name: 'Windows Setup', file: 'NfyniQ_Music_Setup.exe', size: '34.6 MB', path: '/downloads/NfyniQ_Music_Setup.exe' }
+        { name: 'Windows Setup', file: 'NfyniQ_Music_Setup.exe', size: '34.6 MB', path: 'https://github.com/Jerfynn/SONAR-NfyniQ/releases/download/v1.0.0/NfyniQ_Music_Setup.exe' }
       ],
       docId: 'youtify-manual'
     }
