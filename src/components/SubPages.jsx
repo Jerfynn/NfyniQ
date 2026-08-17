@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import { productsData } from '../data/productsData';
 import { 
   Download, 
@@ -731,20 +730,6 @@ $ agy-sonar --clear-clutter --smooth 3`}
 
   return (
     <div className="page-container doc-page-container">
-      {/* Top Breadcrumb */}
-      <div className="page-top-nav-bar">
-        <button 
-          className="inpage-back-btn" 
-          onClick={() => window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'home' }))}
-        >
-          <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} />
-          <span>Back to Home</span>
-        </button>
-        <div className="page-nav-crumbs">
-          <span style={{ color: '#94a3b8' }}>NfyniQ</span> / <span className="active-crumb" style={{ color: '#38bdf8' }}>Documentation Deck</span>
-        </div>
-      </div>
-
       {/* Header */}
       <div className="doc-deck-header">
         <div>
