@@ -7,6 +7,8 @@ import SolutionsPage from './components/SolutionsPage';
 import AboutPage from './components/AboutPage';
 import Contact from './components/Contact';
 import ProductDetailModal from './components/ProductDetailModal';
+import CommandPalette from './components/CommandPalette';
+import FloatingLabBar from './components/FloatingLabBar';
 import { Downloads, Documentation } from './components/SubPages';
 import { productsData } from './data/productsData';
 import { 
@@ -22,7 +24,8 @@ import {
   Download, 
   BookOpen, 
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Search
 } from 'lucide-react';
 import './App.css';
 
@@ -40,6 +43,19 @@ function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [navProgress, setNavProgress] = useState(0);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+
+  // Global Ctrl+K / Cmd+K listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Trigger smooth loading bar on initial mount
   useEffect(() => {
@@ -242,6 +258,17 @@ function App() {
           </nav>
 
           <div className="nav-right-actions">
+            {/* Search Spotlight Trigger Button */}
+            <button 
+              className="nav-search-trigger-btn"
+              onClick={() => setIsCommandPaletteOpen(true)}
+              title="Search portal (Ctrl+K / ⌘K)"
+            >
+              <Search size={14} />
+              <span className="nav-search-text">Search...</span>
+              <kbd className="nav-search-kbd">⌘K</kbd>
+            </button>
+
             <button className="nav-get-in-touch-btn" onClick={() => navigateTo('contact')}>
               <span>Get in Touch</span>
               <ArrowRight size={14} />
@@ -265,6 +292,19 @@ function App() {
           aria-hidden="true"
         />
         <div className={`mobile-menu-drawer ${mobileMenuOpen ? 'open' : ''}`}>
+          {/* Quick Search inside Mobile Drawer */}
+          <button 
+            className="mobile-search-trigger-btn"
+            onClick={() => {
+              setMobileMenuOpen(false);
+              setIsCommandPaletteOpen(true);
+            }}
+          >
+            <Search size={16} />
+            <span>Search software & manuals...</span>
+            <kbd className="nav-search-kbd">⌘K</kbd>
+          </button>
+
           <div className="mobile-drawer-links">
             <span className={`mobile-nav-item ${activeTab === 'home' ? 'active' : ''}`} onClick={() => navigateTo('home')}>Home</span>
             <span className={`mobile-nav-item ${activeTab === 'products' ? 'active' : ''}`} onClick={() => navigateTo('products')}>Products</span>
@@ -300,6 +340,17 @@ function App() {
           />
         )}
 
+        {/* Global Spotlight Search Palette (Ctrl+K / ⌘K) */}
+        <CommandPalette
+          isOpen={isCommandPaletteOpen}
+          onClose={() => setIsCommandPaletteOpen(false)}
+          onNavigateTab={navigateTo}
+          onSelectProduct={(prod) => setSelectedProduct(prod)}
+        />
+
+        {/* Floating Connect with Lab Action Bar */}
+        <FloatingLabBar onNavigateTab={navigateTo} />
+
         {/* Corporate Universal Footer */}
         <footer className="footer-corporate">
           <div className="footer-container">
@@ -327,7 +378,9 @@ function App() {
                     <li key={prod.id}>
                       <button 
                         className="footer-link-btn"
-                        onClick={() => setSelectedProduct(prod)}
+                        onClick={() => {
+                          setSelectedProduct(prod);
+                        }}
                       >
                         {prod.name}
                       </button>
@@ -336,30 +389,15 @@ function App() {
                 </ul>
               </div>
 
-              {/* Services Col */}
+              {/* Core Services Col */}
               <div className="footer-col">
-                <h4 className="footer-col-title">Services</h4>
+                <h4 className="footer-col-title">Engineering</h4>
                 <ul className="footer-links-list">
-                  <li>
-                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
-                      Web Development
-                    </button>
-                  </li>
-                  <li>
-                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
-                      Mobile Apps (Android & iOS)
-                    </button>
-                  </li>
-                  <li>
-                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
-                      Desktop Software (Qt/C++)
-                    </button>
-                  </li>
-                  <li>
-                    <button className="footer-link-btn" onClick={() => navigateTo('services')}>
-                      Custom Software & IoT Links
-                    </button>
-                  </li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('services')}>Desktop Software (Qt/C++)</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('services')}>Mobile Apps (iOS/Android)</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('services')}>Embedded & Edge AI</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('services')}>Web Telemetry Portals</button></li>
+                  <li><button className="footer-link-btn" onClick={() => navigateTo('services')}>Hardware & Sensor Integration</button></li>
                 </ul>
               </div>
 

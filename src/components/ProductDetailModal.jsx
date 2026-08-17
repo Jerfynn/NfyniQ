@@ -72,6 +72,90 @@ const ProductDetailModal = ({ product, onClose, onNavigateTab }) => {
 
               <div className="modal-action-buttons">
                 <button
+                  className="modal-datasheet-btn"
+                  onClick={() => {
+                    const printWindow = window.open('', '_blank');
+                    if (printWindow) {
+                      printWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                          <head>
+                            <title>${product.name} — Technical Datasheet | NfyniQ Technologies</title>
+                            <style>
+                              body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 40px; color: #0f172a; line-height: 1.5; }
+                              .header { border-bottom: 2px solid #0369a1; padding-bottom: 20px; margin-bottom: 30px; display: flex; justify-content: space-between; align-items: flex-end; }
+                              .brand-name { font-size: 24px; font-weight: 800; color: #0f172a; text-transform: uppercase; letter-spacing: -0.5px; }
+                              .brand-sub { font-size: 12px; font-weight: 700; color: #0369a1; text-transform: uppercase; }
+                              .doc-title { font-size: 28px; font-weight: 800; margin: 10px 0 4px; color: #0f172a; }
+                              .tagline { font-size: 15px; color: #0369a1; font-weight: 600; margin-bottom: 20px; }
+                              .section-h { font-size: 16px; font-weight: 700; text-transform: uppercase; color: #0369a1; border-bottom: 1px solid #e2e8f0; padding-bottom: 6px; margin: 25px 0 12px; }
+                              .overview-p { font-size: 14px; color: #334155; line-height: 1.6; }
+                              table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 13px; }
+                              th, td { border: 1px solid #cbd5e1; padding: 8px 12px; text-align: left; }
+                              th { background: #f8fafc; font-weight: 700; width: 35%; color: #0f172a; }
+                              ul { padding-left: 20px; font-size: 14px; color: #334155; }
+                              li { margin-bottom: 6px; }
+                              .footer { margin-top: 50px; padding-top: 20px; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b; display: flex; justify-content: space-between; }
+                            </style>
+                          </head>
+                          <body>
+                            <div class="header">
+                              <div>
+                                <div class="brand-name">NfyniQ Technologies</div>
+                                <div class="brand-sub">Universal Technology & Engineering Solutions</div>
+                              </div>
+                              <div style="text-align: right; font-size: 12px; color: #64748b;">
+                                <div>Document Ref: DS-${product.id.toUpperCase()}</div>
+                                <div>Version: ${product.version} Stable</div>
+                              </div>
+                            </div>
+
+                            <div class="doc-title">${product.name}</div>
+                            <div class="tagline">${product.tagline}</div>
+
+                            <div class="section-h">System Overview</div>
+                            <p class="overview-p">${product.overview}</p>
+
+                            <div class="section-h">Key Features & Architecture</div>
+                            <ul>
+                              ${product.features.map(f => `<li>${f}</li>`).join('')}
+                            </ul>
+
+                            <div class="section-h">Technical Specifications</div>
+                            <table>
+                              <tbody>
+                                ${Object.entries(product.techSpecs).map(([k, v]) => `
+                                  <tr>
+                                    <th>${k}</th>
+                                    <td>${v}</td>
+                                  </tr>
+                                `).join('')}
+                              </tbody>
+                            </table>
+
+                            <div class="section-h">Operational Applications</div>
+                            <ul>
+                              ${product.applications.map(a => `<li>${a}</li>`).join('')}
+                            </ul>
+
+                            <div class="footer">
+                              <div>Confidential & Proprietary • NfyniQ Technologies (nfyniq@gmail.com)</div>
+                              <div>Generated from https://nfyniq.com</div>
+                            </div>
+                            <script>
+                              window.onload = function() { window.print(); }
+                            </script>
+                          </body>
+                        </html>
+                      `);
+                      printWindow.document.close();
+                    }
+                  }}
+                >
+                  <FileText size={14} /> Export Technical Datasheet (PDF)
+                </button>
+
+                <button
                   className="modal-docs-btn"
                   onClick={() => {
                     onClose();
