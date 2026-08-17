@@ -1,5 +1,6 @@
 import React from 'react';
 import { Waves, Cpu, Zap, Activity, Radio, Sparkles, ArrowRight, CheckCircle, ShieldCheck } from 'lucide-react';
+import ScopeEstimator from './ScopeEstimator';
 
 const SolutionsPage = ({ onNavigateTab, onSelectProductById }) => {
   const solutionsList = [
@@ -38,39 +39,25 @@ const SolutionsPage = ({ onNavigateTab, onSelectProductById }) => {
       desc: 'High-speed multi-threaded segmented network download engines, low-latency audio DSP pipelines, bit-perfect gapless crossfades, and real-time synchronized karaoke lyrics.',
       features: [
         'Segmented multi-thread chunk download pipelines',
-        '10-Band graphic equalizer with biquad DSP frequency filters',
-        'Real-time lyric synchronization with microsecond seek indexing',
-        'FFmpeg audio/video multiplexing & transcoding automation'
+        'Built-in FFmpeg transcoding & audio/video muxing',
+        '10-Band Graphic Equalizer with 32-bit floating DSP',
+        'Sub-second real-time timed karaoke lyrics synchronization'
       ],
       associatedProduct: 'NfynDown & NfyniQ Music',
       productId: 'nfyndown'
     },
     {
-      id: 'robotics-automation',
-      title: 'Robotics, Actuator & Industrial Automation',
-      icon: <Activity size={26} className="solution-head-icon" />,
-      desc: 'Real-time telemetry acquisition, multi-axis motor controllers, robotic thruster test benches, and industrial device configuration utilities.',
-      features: [
-        'Hardware telemetry monitoring & live mathematical plotting',
-        'RS-232/485 serial bus protocols for rugged industrial devices',
-        'Automated factory QA test benches & calibration tools',
-        'Sub-millisecond latency command uplinks and safety interlocks'
-      ],
-      associatedProduct: 'Custom Software Solutions',
-      productId: null
-    },
-    {
-      id: 'research-labs',
-      title: 'Scientific Research, Defense & Custom Instrumentation',
+      id: 'custom-dev',
+      title: 'Universal Custom Software & Sensor Integration',
       icon: <Radio size={26} className="solution-head-icon" />,
-      desc: 'Bespoke scientific instrumentation software, sensor DAQ workstations, and hardened mission-control software tailored to strict operational protocols.',
+      desc: 'Full-stack engineering across cross-platform native desktop utilities, mobile companion applications (iOS & Android), industrial sensor drivers, and web analytics dashboards.',
       features: [
-        'Custom high-performance desktop GUIs in Qt/PySide and C++',
-        'Local WebSocket streaming servers for decoupled analysis',
-        'Hardware-accelerated rendering of dense datasets',
-        'Strict offline execution capabilities for secure air-gapped nodes'
+        'Multi-platform desktop software (Windows, macOS, Linux)',
+        'Native Android and iOS mobile app engineering',
+        'Microcontroller firmware and sensor abstraction layers',
+        'High-concurrency web portals and WebSocket live telemetry'
       ],
-      associatedProduct: 'Custom Engineering Services',
+      associatedProduct: null,
       productId: null
     }
   ];
@@ -79,41 +66,44 @@ const SolutionsPage = ({ onNavigateTab, onSelectProductById }) => {
     <div className="page-container">
       {/* Top Breadcrumb & In-Page Back Button */}
       <div className="page-top-nav-bar">
-        <button className="inpage-back-btn" onClick={() => onNavigateTab('home')}>
+        <button 
+          className="inpage-back-btn" 
+          onClick={() => window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'home' }))}
+        >
           <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} />
           <span>Back to Home</span>
         </button>
         <div className="page-nav-crumbs">
-          <span>NfyniQ</span> / <span className="active-crumb">Solutions</span>
+          <span>NfyniQ</span> / <span className="active-crumb">Domain Solutions</span>
         </div>
       </div>
 
       {/* Header */}
-      <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
-        <div className="section-badge">Industry Solutions</div>
-        <h1 className="page-title">Solutions Built for Demanding Environments</h1>
+      <div className="page-header-block">
+        <div className="section-badge">Domain Applications</div>
+        <h1 className="page-title">Specialized Engineering Solutions</h1>
         <p className="page-subtitle">
-          Discover how our software architectures, standalone products, and engineering services solve operational challenges across specialized domains.
+          Proven domain architectures tailored for hydro-acoustic oceanography, edge AI inferencing, media streaming, and bespoke telemetry systems.
         </p>
       </div>
 
       {/* Solutions Grid */}
       <div className="solutions-detailed-grid">
-        {solutionsList.map((sol) => (
+        {solutionsList.map(sol => (
           <div key={sol.id} className="solution-detailed-card">
             <div className="sol-card-header">
               <div className="sol-icon-box">{sol.icon}</div>
-              <h2 className="sol-card-title">{sol.title}</h2>
+              <h3 className="sol-card-title">{sol.title}</h3>
             </div>
-
+            
             <p className="sol-card-desc">{sol.desc}</p>
-
+            
             <div className="sol-features-block">
-              <span className="sol-features-title">Technical Capabilities:</span>
+              <span className="sol-features-title">Key Architectural Capabilities</span>
               <ul className="sol-features-list">
-                {sol.features.map((feat, fIdx) => (
-                  <li key={fIdx}>
-                    <CheckCircle size={14} className="sol-check" />
+                {sol.features.map((feat, idx) => (
+                  <li key={idx}>
+                    <CheckCircle size={13} className="sol-check" />
                     <span>{feat}</span>
                   </li>
                 ))}
@@ -143,8 +133,13 @@ const SolutionsPage = ({ onNavigateTab, onSelectProductById }) => {
         ))}
       </div>
 
+      {/* Interactive Scope Estimator Widget */}
+      <div style={{ marginTop: '4rem', marginBottom: '3rem' }}>
+        <ScopeEstimator onNavigateTab={onNavigateTab} />
+      </div>
+
       {/* Solutions Banner */}
-      <div className="service-bottom-cta-banner" style={{ marginTop: '3rem' }}>
+      <div className="service-bottom-cta-banner">
         <div className="service-bottom-cta-content">
           <h3 className="bottom-cta-heading">Require a Custom Domain Architecture?</h3>
           <p className="bottom-cta-subtext">

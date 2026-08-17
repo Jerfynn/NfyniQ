@@ -22,6 +22,7 @@ import {
   Activity
 } from 'lucide-react';
 import { productsData } from '../data/productsData';
+import FAQSection from './FAQSection';
 
 const HomePage = ({ onNavigateTab, onSelectProduct }) => {
   const [activeHeroTab, setActiveHeroTab] = useState(0);
@@ -475,7 +476,12 @@ const HomePage = ({ onNavigateTab, onSelectProduct }) => {
         </div>
       </section>
 
-      {/* 8. STRONG FINAL CTA SECTION */}
+      {/* 8. INTERACTIVE FAQ SECTION */}
+      <section className="section-container" style={{ marginBottom: '4rem' }}>
+        <FAQSection />
+      </section>
+
+      {/* 9. STRONG FINAL CTA SECTION */}
       <section className="section-container cta-banner-section">
         <div className="cta-banner-card">
           <div className="cta-banner-content">

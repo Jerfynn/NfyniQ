@@ -47,6 +47,12 @@ export const productsData = [
       { name: 'macOS App (.zip)', file: 'sonarviewer-macos-app.zip', size: '36.0 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-macos-app.zip' },
       { name: 'Linux Deb (.zip)', file: 'sonarviewer-linux-deb.zip', size: '76.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-linux-deb.zip' }
     ],
+    releaseNotes: [
+      '360° hydro-acoustic polar swept PPI radar visualization',
+      'Dynamic receiver gain curve calibration and range scale adjustments (10m - 1000m)',
+      'High-throughput WebSocket ping telemetry streaming for AUV & ROV integration',
+      'Signed standalone installer builds for Windows, macOS, and Linux'
+    ],
     docId: 'sonar-manual'
   },
   {
@@ -85,6 +91,12 @@ export const productsData = [
     downloads: [
       { name: 'Windows Standalone Executable (.exe)', file: 'AI_Embedded_Studio.exe', size: '10.1 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/AI_Embedded_Studio.exe' }
     ],
+    releaseNotes: [
+      'Integrated C/C++ MCU code workspace with multi-file project tree',
+      'Neural network quantization engine (FP32 to INT8/INT4) for microcontrollers',
+      'Automatic I2C/SPI peripheral sensor address discovery',
+      'Zero-dependency standalone Windows executable release'
+    ],
     docId: 'ai-studio-intro'
   },
   {
@@ -121,6 +133,12 @@ export const productsData = [
     },
     downloads: [
       { name: 'Windows Standalone Executable (.exe)', file: 'NfynDown.exe', size: '54.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfynDown.exe' }
+    ],
+    releaseNotes: [
+      'Multi-threaded async segmented chunk download engine',
+      'Automated FFmpeg high-definition audio and video muxing',
+      'Integrated browser session cookie decryption support (Chrome/Edge/Firefox)',
+      'Standalone portable Windows binary with zero external dependencies'
     ],
     docId: 'nfyndown-manual'
   },
@@ -159,6 +177,12 @@ export const productsData = [
     },
     downloads: [
       { name: 'Windows Setup Installer (.exe)', file: 'NfyniQ_Music_Setup.exe', size: '34.6 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfyniQ_Music_Setup.exe' }
+    ],
+    releaseNotes: [
+      'Line-by-line real-time synchronized lyrics with tap-to-seek',
+      '10-Band hardware-calibrated Graphic Equalizer with bass boost',
+      'Gapless playback and customizable crossfade transitions (1.0s - 12.0s)',
+      'Offline music caching and multilingual smart recommendations'
     ],
     docId: 'youtify-manual'
   }

@@ -27,6 +27,7 @@ export const Downloads = () => {
   const [selectedOS, setSelectedOS] = useState('All');
   const [search, setSearch] = useState('');
   const [copiedCmd, setCopiedCmd] = useState(false);
+  const [selectedChangelog, setSelectedChangelog] = useState(null);
 
   const filteredProducts = productsData.filter(prod => {
     const matchesSearch = prod.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -47,7 +48,7 @@ export const Downloads = () => {
   });
 
   const handleCopyCmd = () => {
-    navigator.clipboard.writeText('iwr -useb https://nfyniq.com/install.ps1 | iex');
+    navigator.clipboard.writeText('iwr -useb https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/install.ps1 | iex');
     setCopiedCmd(true);
     setTimeout(() => setCopiedCmd(false), 2000);
   };
@@ -140,7 +141,18 @@ export const Downloads = () => {
 
               {/* Direct Platform Download Buttons */}
               <div className="dl-platform-list">
-                <span className="dl-section-label">Compiled Packages</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2px' }}>
+                  <span className="dl-section-label">Compiled Packages</span>
+                  {prod.releaseNotes && (
+                    <button 
+                      className="dl-changelog-trigger-btn"
+                      onClick={() => setSelectedChangelog(prod)}
+                    >
+                      <Sparkles size={11} /> What's New in {prod.version}
+                    </button>
+                  )}
+                </div>
+
                 {prod.downloads.map((dl, idx) => (
                   <a
                     key={idx}
@@ -177,6 +189,49 @@ export const Downloads = () => {
           </div>
         ))}
       </div>
+
+      {/* Release Notes / What's New Modal */}
+      {selectedChangelog && (
+        <div className="product-modal-backdrop" onClick={() => setSelectedChangelog(null)}>
+          <div className="product-modal-content changelog-modal-box" onClick={(e) => e.stopPropagation()}>
+            <div className="product-modal-header">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Sparkles size={18} style={{ color: 'var(--teal)' }} />
+                <h3 style={{ margin: 0, fontSize: '1.2rem', fontFamily: 'var(--font-display)', fontWeight: 800 }}>
+                  {selectedChangelog.name} — Release Notes
+                </h3>
+              </div>
+              <button className="product-modal-close" onClick={() => setSelectedChangelog(null)}>
+                ✕
+              </button>
+            </div>
+            <div style={{ padding: '1.75rem' }}>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '1.25rem', alignItems: 'center' }}>
+                <span className="dl-badge-version">{selectedChangelog.version} Stable</span>
+                <span style={{ fontSize: '0.82rem', color: 'var(--text-secondary)' }}>Production Release Build</span>
+              </div>
+              <h4 style={{ fontSize: '0.9rem', fontWeight: 700, marginBottom: '0.75rem', color: 'var(--text-primary)' }}>
+                Key Highlights & Enhancements:
+              </h4>
+              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1.5rem', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                {selectedChangelog.releaseNotes?.map((note, nIdx) => (
+                  <li key={nIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', fontSize: '0.88rem', color: 'var(--text-secondary)' }}>
+                    <CheckCircle size={15} style={{ color: '#10b981', flexShrink: 0, marginTop: '2px' }} />
+                    <span>{note}</span>
+                  </li>
+                ))}
+              </ul>
+              <button 
+                className="btn-primary-accent" 
+                style={{ width: '100%', justifyContent: 'center' }}
+                onClick={() => setSelectedChangelog(null)}
+              >
+                <span>Close Release Notes</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Quick Terminal CLI Installation Banner */}
       <div className="dl-cli-terminal-banner">

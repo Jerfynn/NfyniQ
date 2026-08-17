@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import ScopeEstimator from './ScopeEstimator';
+import FAQSection from './FAQSection';
 import { 
   Mail, 
   Phone, 
@@ -30,6 +32,38 @@ const Contact = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isQuoteRequest, setIsQuoteRequest] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // Auto-fill form if transferred from ScopeEstimator or Product detail
+  useEffect(() => {
+    const saved = sessionStorage.getItem('prefilled-quote');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        setFormData(prev => ({
+          ...prev,
+          requirement: parsed.requirement || prev.requirement,
+          productOrService: parsed.productOrService || prev.productOrService,
+          message: parsed.message || prev.message
+        }));
+        sessionStorage.removeItem('prefilled-quote');
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  }, []);
+
+  const handleApplyEstimate = (est) => {
+    setFormData(prev => ({
+      ...prev,
+      requirement: est.requirement,
+      productOrService: est.productOrService,
+      message: est.message
+    }));
+    const formElement = document.getElementById('contact-form-section');
+    if (formElement) {
+      formElement.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const handleChange = (e) => {
     setFormData(prev => ({
@@ -112,7 +146,12 @@ const Contact = () => {
         </p>
       </div>
 
-      <div className="contact-layout-grid">
+      {/* Interactive Scope & Quote Estimator Widget */}
+      <div style={{ marginBottom: '3.5rem' }}>
+        <ScopeEstimator onApplyEstimate={handleApplyEstimate} />
+      </div>
+
+      <div id="contact-form-section" className="contact-layout-grid">
         {/* Left Side: Contact Information & Direct Channels */}
         <div className="contact-info-col">
           <div className="contact-info-card">
@@ -398,6 +437,11 @@ const Contact = () => {
             )}
           </div>
         </div>
+      </div>
+
+      {/* Interactive FAQ Section */}
+      <div style={{ marginTop: '5rem' }}>
+        <FAQSection />
       </div>
     </div>
   );
