@@ -39,6 +39,20 @@ function App() {
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [navProgress, setNavProgress] = useState(0);
+
+  // Trigger smooth loading bar on initial mount
+  useEffect(() => {
+    setNavProgress(30);
+    const t1 = setTimeout(() => setNavProgress(75), 100);
+    const t2 = setTimeout(() => setNavProgress(100), 250);
+    const t3 = setTimeout(() => setNavProgress(0), 550);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+    };
+  }, []);
 
   useEffect(() => {
     const handleNav = (e) => {
@@ -82,6 +96,12 @@ function App() {
   }, [mobileMenuOpen, selectedProduct]);
 
   const navigateTo = (tab) => {
+    if (tab !== activeTab) {
+      setNavProgress(35);
+      setTimeout(() => setNavProgress(80), 80);
+      setTimeout(() => setNavProgress(100), 200);
+      setTimeout(() => setNavProgress(0), 450);
+    }
     setActiveTab(tab);
     setMobileMenuOpen(false);
     if (window.location.hash !== '#' + tab) {
@@ -139,6 +159,16 @@ function App() {
       <CanvasBackground />
 
       <div className="app-container">
+        {/* Futuristic Top Loading / Refreshing Progress Bar */}
+        <div 
+          className="top-loading-bar" 
+          style={{ 
+            width: `${navProgress}%`, 
+            opacity: navProgress > 0 ? 1 : 0,
+            transition: navProgress === 0 ? 'opacity 0.25s ease' : 'width 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease'
+          }} 
+        />
+
         {/* Sticky Modern Navbar */}
         <header className="navbar">
           <div className="nav-brand-area" onClick={() => navigateTo('home')}>
@@ -256,7 +286,9 @@ function App() {
 
         {/* Main Content Area */}
         <main className="main-content">
-          {renderContent()}
+          <div key={activeTab} className="page-transition-wrapper">
+            {renderContent()}
+          </div>
         </main>
 
         {/* Global Reusable Product Detail Modal */}
