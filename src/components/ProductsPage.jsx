@@ -18,8 +18,19 @@ const ProductsPage = ({ onSelectProduct, onNavigateTab }) => {
 
   return (
     <div className="page-container">
+      {/* Top Breadcrumb & In-Page Back Button */}
+      <div className="page-top-nav-bar">
+        <button className="inpage-back-btn" onClick={() => onNavigateTab('home')}>
+          <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} />
+          <span>Back to Home</span>
+        </button>
+        <div className="page-nav-crumbs">
+          <span>NfyniQ</span> / <span className="active-crumb">Products</span>
+        </div>
+      </div>
+
       {/* Header */}
-      <div className="page-header-block">
+      <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
         <div className="section-badge">Product Portfolio</div>
         <h1 className="page-title">Specialized Software Products & Platforms</h1>
         <p className="page-subtitle">

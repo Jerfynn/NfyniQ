@@ -28,7 +28,15 @@ import './App.css';
 
 function App() {
   // Navigation tabs: 'home', 'products', 'services', 'solutions', 'downloads', 'documentation', 'about', 'contact'
-  const [activeTab, setActiveTab] = useState('home');
+  const [activeTab, setActiveTab] = useState(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const initialTab = window.location.hash.replace('#', '');
+      if (['home', 'products', 'services', 'solutions', 'downloads', 'documentation', 'about', 'contact'].includes(initialTab)) {
+        return initialTab;
+      }
+    }
+    return 'home';
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -36,13 +44,38 @@ function App() {
     const handleNav = (e) => {
       navigateTo(e.detail);
     };
+
+    const handleHashAndPopState = (e) => {
+      const hash = window.location.hash.replace('#', '') || 'home';
+      const validTabs = ['home', 'products', 'services', 'solutions', 'downloads', 'documentation', 'about', 'contact'];
+      if (validTabs.includes(hash)) {
+        setActiveTab(hash);
+      } else {
+        setActiveTab('home');
+      }
+      setMobileMenuOpen(false);
+      if (selectedProduct) {
+        setSelectedProduct(null);
+      }
+    };
+
     window.addEventListener('nav-to-tab', handleNav);
-    return () => window.removeEventListener('nav-to-tab', handleNav);
-  }, []);
+    window.addEventListener('popstate', handleHashAndPopState);
+    window.addEventListener('hashchange', handleHashAndPopState);
+
+    return () => {
+      window.removeEventListener('nav-to-tab', handleNav);
+      window.removeEventListener('popstate', handleHashAndPopState);
+      window.removeEventListener('hashchange', handleHashAndPopState);
+    };
+  }, [selectedProduct]);
 
   const navigateTo = (tab) => {
     setActiveTab(tab);
     setMobileMenuOpen(false);
+    if (window.location.hash !== '#' + tab) {
+      window.history.pushState({ tab }, '', '#' + tab);
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

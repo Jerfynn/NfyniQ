@@ -30,8 +30,22 @@ const Contact = () => {
 
   return (
     <div className="page-container">
+      {/* Top Breadcrumb & In-Page Back Button */}
+      <div className="page-top-nav-bar">
+        <button 
+          className="inpage-back-btn" 
+          onClick={() => window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'home' }))}
+        >
+          <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} />
+          <span>Back to Home</span>
+        </button>
+        <div className="page-nav-crumbs">
+          <span>NfyniQ</span> / <span className="active-crumb">Contact & Quotes</span>
+        </div>
+      </div>
+
       {/* Header */}
-      <div className="page-header-block">
+      <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
         <div className="section-badge">Get in Touch</div>
         <h1 className="page-title">Have a Technology Challenge?</h1>
         <p className="page-subtitle">

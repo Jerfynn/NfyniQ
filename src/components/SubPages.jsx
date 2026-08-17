@@ -14,7 +14,7 @@ export const Downloads = () => {
         { name: 'macOS Bundle', file: 'sonarviewer-macos-app.zip', size: '36.0 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-macos-app.zip' },
         { name: 'Linux Binaries', file: 'sonarviewer-linux-deb.zip', size: '76.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/sonarviewer-linux-deb.zip' }
       ],
-      docId: 'install'
+      docId: 'sonar-manual'
     },
     {
       name: 'AI Embedded Studio',
@@ -34,7 +34,7 @@ export const Downloads = () => {
       platforms: [
         { name: 'Windows Downloader', file: 'NfynDown.exe', size: '54.2 MB', path: 'https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/NfynDown.exe' }
       ],
-      docId: 'nfyndown-intro'
+      docId: 'nfyndown-manual'
     },
     {
       name: 'NfyniQ Music (Youtify)',
@@ -50,10 +50,26 @@ export const Downloads = () => {
 
   return (
     <div className="page-container">
-      <h2 className="page-title">Downloads Hub</h2>
-      <p className="page-subtitle">Grab the latest compiled stable build releases of the NfyniQ software suites.</p>
+      <div className="page-top-nav-bar">
+        <button 
+          className="inpage-back-btn" 
+          onClick={() => window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'home' }))}
+        >
+          <ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} />
+          <span>Back to Home</span>
+        </button>
+        <div className="page-nav-crumbs">
+          <span>NfyniQ</span> / <span className="active-crumb">Downloads</span>
+        </div>
+      </div>
 
-      <div className="download-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', maxWidth: '1200px', margin: '2rem auto 0' }}>
+      <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
+        <div className="section-badge">Stable Releases</div>
+        <h1 className="page-title">Downloads Hub</h1>
+        <p className="page-subtitle">Grab the latest compiled standalone build releases of the NfyniQ software suites.</p>
+      </div>
+
+      <div className="download-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', maxWidth: '1200px', margin: '0 auto' }}>
         {products.map((prod, index) => (
           <div key={index} className="glass download-card" style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: '1rem', borderTop: '3px solid var(--teal)' }}>
             <div>
@@ -114,48 +130,6 @@ export const Downloads = () => {
             </div>
           </div>
         ))}
-      </div>
-    </div>
-  );
-};
-
-// SERVICES & SOLUTIONS PAGE
-export const Services = () => {
-  const cards = [
-    { title: 'Sub-Sea Pipeline & Seabed Surveys', desc: 'High-resolution bathymetric seabed mapping, tracing sub-surface infrastructure, cabling paths, and surveying pipelines using side-scan acoustic transducers.' },
-    { title: 'Transducer Calibration & Tuning', desc: 'Precision frequency matching (20 kHz to 80 kHz), receiver gain adjustment, and analog-to-digital sensor voltage calibrations for custom hydrophones.' },
-    { title: 'Embedded Marine Integrations', desc: 'Connecting transponders, echo sounders, and marine telemetry hardware directly to custom serial USB and TCP data links.' },
-    { title: 'Acoustic Signal Processing', desc: 'Custom noise-cancellation filtering, thermocline wave adjustment, and biological cluster tracking algorithms configured specifically for your environment.' }
-  ];
-
-  return (
-    <div className="page-container">
-      <h2 className="page-title">Professional Services</h2>
-      <p className="page-subtitle">Providing end-to-end hydro-acoustic calibrations, seabed surveying, and custom marine engineering.</p>
-      
-      <div className="solutions-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginTop: '2rem' }}>
-        {cards.map((card, index) => (
-          <div key={index} className="glass solution-card" style={{ padding: '1.75rem', borderLeft: '4px solid var(--teal)' }}>
-            <h3 className="solution-title" style={{ color: 'var(--teal)', fontSize: '1.15rem', marginBottom: '0.5rem' }}>{card.title}</h3>
-            <p className="solution-text" style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5' }}>{card.desc}</p>
-          </div>
-        ))}
-      </div>
-
-      <div className="glass" style={{ marginTop: '3rem', padding: '2rem', textAlign: 'center', background: 'rgba(13, 148, 136, 0.03)', border: '1px solid rgba(13, 148, 136, 0.12)' }}>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: '700', marginBottom: '0.5rem' }}>Need Custom Acoustic Engineering?</h3>
-        <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', maxWidth: '600px', margin: '0 auto 1.5rem' }}>
-          Our engineering team can deploy on-site to configure transducer arrays, integrate customized filters, and adapt Sonar Viewer for specific survey missions.
-        </p>
-        <button 
-          className="cta-button" 
-          style={{ margin: '0 auto', color: 'var(--teal)', borderColor: 'rgba(13,148,136,0.3)', background: 'rgba(13,148,136,0.08)', cursor: 'pointer' }} 
-          onClick={() => {
-            window.dispatchEvent(new CustomEvent('nav-to-tab', { detail: 'contact' }));
-          }}
-        >
-          Initiate Integration Request
-        </button>
       </div>
     </div>
   );
@@ -689,233 +663,72 @@ $ agy-sonar --clear-clutter --smooth 3`}
   const categories = [...new Set(docTopics.map(t => t.category))];
 
   return (
-    <div className="page-container">
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+    <div className="page-container doc-page-container">
+      {/* Header */}
+      <div className="doc-deck-header">
         <div>
-          <h2 className="page-title" style={{ marginBottom: '0.25rem' }}>Documentation Deck</h2>
-          <p className="showcase-tagline" style={{ margin: 0 }}>Logbooks, manuals, and command references for NfyniQ suites.</p>
+          <div className="section-badge" style={{ background: 'rgba(3, 105, 161, 0.2)', color: '#38bdf8', borderColor: 'rgba(56, 189, 248, 0.3)' }}>Technical Knowledge Base</div>
+          <h1 className="page-title" style={{ color: '#f8fafc', margin: '0.25rem 0' }}>Documentation Deck</h1>
+          <p className="page-subtitle" style={{ color: '#94a3b8', margin: 0 }}>
+            Official user manuals, operational workflows, API references, and CLI specifications.
+          </p>
         </div>
-        
-        <button 
-          className="back-button" 
-          onClick={() => setDarkMode(!darkMode)}
-          style={{ display: 'flex', alignItems: 'center', gap: '6px', background: darkMode ? '#1e293b' : '#ffffff', color: darkMode ? '#ffffff' : 'var(--text-primary)' }}
-        >
-          {darkMode ? <Sun size={14} style={{ stroke: '#fbbf24' }} /> : <Moon size={14} />}
-          <span>{darkMode ? 'Light Docs' : 'Dark Docs'}</span>
-        </button>
       </div>
 
-      <div style={docThemeStyle}>
-        <div className="doc-layout" style={{ gridTemplateColumns: '260px 1fr', gap: 0 }}>
-          
-          {/* Sidebar */}
-          <div 
-            className="doc-sidebar" 
-            style={{ 
-              borderRight: '1px solid var(--border-muted, rgba(15,23,42,0.06))', 
-              padding: '1.5rem', 
-              background: darkMode ? '#0e172a' : '#f8fafc',
-              height: '100%',
-              minHeight: '560px'
-            }}
-          >
-            <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
-              <Search size={14} style={{ position: 'absolute', left: '10px', top: '10px', color: 'var(--text-muted)' }} />
-              <input
-                type="text"
-                className="contact-input"
-                style={{ 
-                  width: '100%', 
-                  paddingLeft: '2rem', 
-                  paddingTop: '6px', 
-                  paddingBottom: '6px', 
-                  fontSize: '0.8rem',
-                  background: darkMode ? '#1e293b' : '#ffffff',
-                  color: darkMode ? '#ffffff' : '#0f172a',
-                  border: darkMode ? '1px solid rgba(255,255,255,0.1)' : '1px solid rgba(0,0,0,0.1)'
-                }}
-                placeholder="Search..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-            </div>
+      {/* Permanently Dark Parallel Documentation Frame */}
+      <div className="doc-parallel-frame">
+        {/* Left Fixed Sidebar */}
+        <aside className="doc-sidebar-pane">
+          <div className="doc-search-box">
+            <Search size={14} className="doc-search-icon" />
+            <input
+              type="text"
+              className="doc-search-input"
+              placeholder="Search topics & commands..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
 
+          <div className="doc-topics-tree">
             {categories.map(cat => {
               const topics = filteredTopics.filter(t => t.category === cat);
               if (topics.length === 0) return null;
               return (
-                <div key={cat} style={{ marginBottom: '1.25rem' }}>
-                  <span className="doc-sidebar-title" style={{ fontSize: '0.68rem', letterSpacing: '0.05em', display: 'block', marginBottom: '0.4rem', color: darkMode ? '#64748b' : '#94a3b8' }}>
-                    {cat.toUpperCase()}
+                <div key={cat} className="doc-category-group">
+                  <span className="doc-cat-label">
+                    {cat}
                   </span>
-                  {topics.map(topic => (
-                    <span
-                      key={topic.id}
-                      className={`doc-sidebar-link ${activeTopic === topic.id ? 'active' : ''}`}
-                      style={{ 
-                        fontSize: '0.84rem', 
-                        color: activeTopic === topic.id ? 'var(--teal)' : (darkMode ? '#94a3b8' : 'var(--text-secondary)'),
-                        background: activeTopic === topic.id ? 'rgba(13, 148, 136, 0.08)' : 'transparent',
-                        display: 'block',
-                        padding: '6px 10px',
-                        borderRadius: '6px',
-                        cursor: 'pointer',
-                        marginBottom: '2px',
-                        transition: 'all 0.15s'
-                      }}
-                      onClick={() => setActiveTopic(topic.id)}
-                    >
-                      {topic.label}
-                    </span>
-                  ))}
+                  <div className="doc-cat-items">
+                    {topics.map(topic => (
+                      <button
+                        key={topic.id}
+                        className={`doc-nav-item-btn ${activeTopic === topic.id ? 'active' : ''}`}
+                        onClick={() => {
+                          setActiveTopic(topic.id);
+                          const contentPane = document.getElementById('doc-content-pane');
+                          if (contentPane) contentPane.scrollTop = 0;
+                        }}
+                      >
+                        <span className="doc-item-indicator"></span>
+                        <span className="doc-item-text">{topic.label}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               );
             })}
           </div>
+        </aside>
 
-          {/* Content */}
-          <div className="doc-content" style={{ padding: '2rem', background: darkMode ? '#090d16' : '#ffffff', minHeight: '560px', overflowY: 'auto' }}>
-            <div style={{ color: darkMode ? '#cbd5e1' : 'var(--text-primary)' }}>
-              {renderDocContent()}
-            </div>
+        {/* Right Parallel Content Pane */}
+        <section id="doc-content-pane" className="doc-content-pane">
+          <div className="doc-content-article">
+            {renderDocContent()}
           </div>
-
-        </div>
+        </section>
       </div>
     </div>
   );
 };
 
-// SHOWCASE PAGE (Sonar Viewer installations)
-export const Showcase = () => {
-  const studies = [
-    { client: 'Pacific Marine Lab', task: 'Mapped deep ocean trenches down to 1000m using calibrated transducer sonar viewer pings.' },
-    { client: 'Oceanic Research Inst', task: 'Filtered out biological wave noise to identify historical shipwreck contours.' },
-    { client: 'GeoSurvey Group', task: 'Traced sub-sea telemetry cabling paths with real-time echo-intensity graphs.' }
-  ];
-
-  return (
-    <div className="page-container">
-      <h2 className="page-title">Showcase Gallery</h2>
-      <p className="page-subtitle">Explore deployed applications of the NfyniQ Sonar Viewer platform.</p>
-      
-      <div className="solutions-grid">
-        {studies.map((item, index) => (
-          <div key={index} className="glass solution-card" style={{ borderLeft: '4px solid var(--teal)', padding: '1.5rem' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--teal)' }}>{item.client}</span>
-            <p className="solution-text" style={{ marginTop: '0.5rem' }}>{item.task}</p>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// BLOG PAGE
-export const Blog = () => {
-  const posts = [
-    { title: 'Calibrating Sub-Sea Sonar Arrays in Real-Time', date: 'July 14, 2026', author: 'NfyniQ Marine Team', excerpt: 'Acoustic scanning grids require noise-cancellation filtering to separate marine biology echoes from wreckage outlines.' },
-    { title: 'Filtering Marine Thermoclines in Hydrophone Feeds', date: 'June 30, 2026', author: 'Sonar Labs', excerpt: 'How sudden changes in water temperature distort sound velocity parameters and how to calibrate software filters.' }
-  ];
-
-  return (
-    <div className="page-container">
-      <h2 className="page-title">Marine Tech Blog</h2>
-      <p className="page-subtitle">Tech reports and releases from our marine acoustics desk.</p>
-      
-      <div className="blog-grid">
-        {posts.map((post, index) => (
-          <div key={index} className="glass blog-card">
-            <div className="blog-meta">
-              <span>{post.date}</span>
-              <span>•</span>
-              <span>By {post.author}</span>
-            </div>
-            <h3 className="blog-title">{post.title}</h3>
-            <p className="blog-excerpt">{post.excerpt}</p>
-            <span className="blog-readmore" style={{ color: 'var(--teal)' }}>Read full report <ArrowRight size={12} style={{ display: 'inline', verticalAlign: 'middle' }} /></span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-// ABOUT PAGE (Acoustic Chronology Timeline)
-export const About = () => {
-  const timeline = [
-    { year: '2025', title: 'Started NfyniQ', desc: 'Formulated acoustic sensor software logic close to edge hardware.' },
-    { year: '2025', title: 'Sonar Transducer Calibration', desc: 'Built the first digital noise filters to parse voltage returns into spatial mappings.' },
-    { year: '2026', title: 'Sonar Viewer Launch', desc: 'Completed the circular scan scope engine rendering targets dynamically on Windows, macOS, and Linux.' },
-    { year: '2026 & Beyond', title: 'Future Acoustic Roadmap', desc: 'Expanding to multi-hydrophone array correlations, deep trench mappings, and sub-sea communications.' }
-  ];
-
-  return (
-    <div className="page-container">
-      <h2 className="page-title">About NfyniQ</h2>
-      <p className="page-subtitle">Engineering high-performance software systems designed for extreme physical environments and acoustic sensors.</p>
-
-      <div className="glass" style={{ padding: '3rem 2rem', position: 'relative' }}>
-        <h3 style={{ fontFamily: 'var(--font-display)', fontWeight: '700', fontSize: '1.4rem', marginBottom: '2.5rem', textAlign: 'center' }}>
-          Our Sonar Development Chronology
-        </h3>
-
-        <div style={{ position: 'relative', maxWidth: '600px', margin: '0 auto' }}>
-          <div 
-            style={{ 
-              position: 'absolute', 
-              left: '20px', 
-              top: '10px', 
-              bottom: '10px', 
-              width: '2px', 
-              background: 'linear-gradient(180deg, var(--teal) 0%, var(--cyan) 100%)' 
-            }}
-          />
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-            {timeline.map((step, idx) => (
-              <div key={idx} style={{ display: 'flex', gap: '1.5rem', position: 'relative', alignItems: 'flex-start' }}>
-                <div 
-                  style={{ 
-                    width: '12px', 
-                    height: '12px', 
-                    borderRadius: '50%', 
-                    background: '#ffffff', 
-                    border: '3px solid var(--teal)', 
-                    position: 'absolute', 
-                    left: '15px', 
-                    top: '6px', 
-                    zIndex: 2,
-                    boxShadow: '0 0 8px rgba(13,148,136,0.3)'
-                  }} 
-                />
-
-                <div style={{ paddingLeft: '2.5rem', display: 'flex', flexDirection: 'column', gap: '4px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span 
-                      style={{ 
-                        fontFamily: 'var(--font-mono)', 
-                        fontSize: '0.85rem', 
-                        fontWeight: '700', 
-                        background: 'rgba(13,148,136,0.06)', 
-                        color: 'var(--teal)',
-                        padding: '2px 8px',
-                        borderRadius: '4px'
-                      }}
-                    >
-                      {step.year}
-                    </span>
-                    <h4 style={{ fontSize: '1rem', fontWeight: '700', color: 'var(--text-primary)' }}>{step.title}</h4>
-                  </div>
-                  <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: '1.5', margin: 0 }}>{step.desc}</p>
-                </div>
-
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
