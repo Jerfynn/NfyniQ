@@ -6,9 +6,17 @@ const FAQSection = () => {
 
   const faqs = [
     {
-      question: 'Are your software downloads completely self-contained and portable?',
-      answer: 'Yes. Every desktop binary in our downloads hub (Sonar Viewer, AI Embedded Studio, NfynDown, and NfyniQ Music) is compiled with all required runtime dependencies, libraries, and graphics drivers bundled. You do not need Python, Node.js, or complex third-party runtimes to execute them out of the box.',
+      question: 'Do I need to install anything else to run your apps?',
+      answer: 'No. Every download bundles what it needs. NfyniQ Chat, Smart Reminder Assistant, NfyniQ Music and Sonar Viewer come as installers; AI Embedded Studio and NfynDown are portable .exe files you can run directly. You do not need Python, Node.js or any other runtime.',
       category: 'Software & Binaries'
+    },
+    {
+      question: 'Windows says “Windows protected your PC” when I open an installer. Is it safe?',
+      answer: 'That is Windows SmartScreen, which warns about any new app that is not code-signed yet. Click More info, then Run anyway. To confirm the file is exactly what we published, compare its SHA-256 checksum (shown on the Downloads page) with the output of Get-FileHash in PowerShell.'
+    },
+    {
+      question: 'Does NfyniQ Chat need the internet or a server?',
+      answer: 'No. NfyniQ Chat works entirely on your local Wi-Fi or wired network. Messages and files travel directly between computers and are never uploaded anywhere. Everyone just needs to be on the same network and allow the app through the Windows firewall on Private networks.'
     },
     {
       question: 'Can NfyniQ engineer custom hardware drivers, sensor pipelines, or telemetry software for our project?',

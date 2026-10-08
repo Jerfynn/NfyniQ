@@ -2,16 +2,26 @@
   "name": "NfyniQ Technologies",
   "short_name": "NfyniQ",
   "description": "Universal Technology and Product Engineering Portal",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#0284c7",
+  "background_color": "#070C18",
+  "theme_color": "#070C18",
   "icons": [
     {
-      "src": "/favicon.svg",
-      "sizes": "64x64 128x128 256x256 512x512",
+      "src": "favicon.svg",
+      "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
     }
   ]
 }

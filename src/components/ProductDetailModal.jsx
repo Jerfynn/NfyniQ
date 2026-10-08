@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, CheckCircle, Download, BookOpen, Layers, Cpu, ExternalLink, ArrowRight, ShieldCheck, HardDrive } from 'lucide-react';
+import { X, CheckCircle, Download, BookOpen, Layers, Cpu, ExternalLink, ArrowRight, ShieldCheck, HardDrive, FileText } from 'lucide-react';
 
 const ProductDetailModal = ({ product, onClose, onNavigateTab }) => {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -140,7 +140,7 @@ const ProductDetailModal = ({ product, onClose, onNavigateTab }) => {
 
                             <div class="footer">
                               <div>Confidential & Proprietary • NfyniQ Technologies (nfyniq@gmail.com)</div>
-                              <div>Generated from https://nfyniq.com</div>
+                              <div>Generated from https://jerfynn.github.io/NfyniQ/</div>
                             </div>
                             <script>
                               window.onload = function() { window.print(); }

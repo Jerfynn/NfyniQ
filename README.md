@@ -1,75 +1,106 @@
-# NfyniQ SonarViewer Web Portal
+# NfyniQ Technologies — website
 
-A high-performance, premium corporate-minimal web hub showcasing **SonarViewer**, the desktop suite engineered for the Blue Robotics Ping360 mechanical scanning sonar. 
+Company website for NfyniQ: products, services, downloads, documentation and contact.
+Live at **https://jerfynn.github.io/NfyniQ/**
 
-Built with React, Vite, and custom CSS variables, the application features an interactive live scope sweep simulator, technical documentation decks, unified theme-responsive layouts (with Light/Dark toggles), and a secure-animation downloads pipeline.
+Products: **NfyniQ Chat** (new), **Smart Reminder Assistant** (new), Sonar Viewer,
+AI Embedded Studio, NfynDown and NfyniQ Music.
 
----
-
-## 🚀 Key Features
-
-* **Live Sonar Simulator Scope**: Interactive circular Plan Position Indicator (PPI) canvas that simulates transducer sweeping, acoustic gain adjustments, and moving sonar targets in real time.
-* **Responsive Dark Mode**: Smooth HSL-based dark mode toggle synced across all navigation cards and documentation layouts.
-* **Documentation Deck**: Multi-topic technical guide for developers and engineers covering binary formats, network architectures, and hardware setups.
-* **Deep Doc-Simulator Integration**: Quick-action buttons in the documentation trigger navigation changes and configure state values (Gain, Range, Transmission status) inside the live home screen scope simulator.
-* **Secure Download Animation**: 1.5-second connection verification loader feedback prior to launching stand-alone binary package installations.
-* **Private Code Integrity**: Points package download links to a separate public releases repository, keeping main project source codes secure and private.
+Built with React + Vite. Every push to `main` builds and publishes the site
+automatically through GitHub Actions (`.github/workflows/deploy.yml`).
 
 ---
 
-## 🛠️ Tech Stack
+## One-time setup
 
-* **Frontend Engine**: React (Functional components, hooks, custom state events)
-* **Build System**: Vite (Next-generation fast frontend toolchain)
-* **Styling**: Vanilla CSS (Tailored variables, animations, glassmorphism, responsive grid sheets)
-* **Vector Icons**: Lucide React
-* **Deployment**: Cloudflare Pages (Serverless static hosting)
+### 1. Clean the repo and push this code
+The old repo contains ~410 MB of installers (SonarViewer is stored twice).
+Installers belong in **Releases**, not in the code. In a terminal:
 
----
-
-## 💻 Local Development
-
-Follow these steps to run the web portal locally on your development server:
-
-### 1. Clone the Repository
 ```bash
 git clone https://github.com/Jerfynn/NfyniQ.git
 cd NfyniQ
+git rm -r --quiet .                 # clear old files (they stay in git history)
+# copy everything from this zip into the NfyniQ folder (include hidden .github and .env)
+git add -A
+git commit -m "Combined website: dark redesign, NfyniQ Chat + Smart Reminder, bug fixes"
+git push
 ```
 
-### 2. Install Project Dependencies
+### 2. Make the repo public
+Settings → General → Danger Zone → **Change visibility → Public**.
+Free GitHub Pages and public downloads from Releases both require this.
+
+### 3. Turn on GitHub Pages (Actions)
+Settings → **Pages** → Build and deployment → Source: **GitHub Actions**.
+
+Then open the **Actions** tab and wait for "Deploy website to GitHub Pages" to
+turn green (about 1 minute). The site is live at https://jerfynn.github.io/NfyniQ/
+
+### 4. Upload installers to Releases
+The download buttons point at these exact addresses, so tags and file names
+must match exactly (dots, not underscores).
+
+| Product | Release tag | File name |
+|---|---|---|
+| NfyniQ Chat | `chat-v2.0.0` | `NfyniQ-Chat-Setup-2.0.0.exe` |
+| Smart Reminder Assistant | `reminder-v1.2.0` | `Smart-Reminder-Assistant-Setup-1.2.0.exe` |
+| Sonar Viewer, AI Embedded Studio, NfynDown, NfyniQ Music | `v1.0.0` | `SonarViewer_Setup.exe`, `sonarviewer-macos-app.zip`, `sonarviewer-linux-deb.zip`, `AI_Embedded_Studio.exe`, `NfynDown.exe`, `NfyniQ_Music_Setup.exe` |
+
+If the `v1.0.0` release already exists with those files, leave it alone.
+
+Repo → **Releases** → **Draft a new release** → Choose a tag → type the tag →
+**Create new tag** → drag in the file → **Publish release**.
+
+Or with the GitHub CLI:
+
+```bash
+gh release create chat-v2.0.0 NfyniQ-Chat-Setup-2.0.0.exe --repo Jerfynn/NfyniQ --title "NfyniQ Chat 2.0.0"
+gh release create reminder-v1.2.0 Smart-Reminder-Assistant-Setup-1.2.0.exe --repo Jerfynn/NfyniQ --title "Smart Reminder Assistant 1.2.0"
+```
+
+---
+
+## Everyday editing
+
 ```bash
 npm install
+npm run dev        # http://localhost:5173/NfyniQ/
+npm run build      # production build into dist/
 ```
 
-### 3. Launch Development Server
-```bash
-npm run dev
-```
-*Access the local website at [http://localhost:5173](http://localhost:5173).*
+- **Products** (names, text, screenshots, download links, checksums):
+  `src/data/productsData.js` — the home page, products page, downloads,
+  footer and search all update from this one file.
+- **User manuals**: `src/components/SubPages.jsx` (Documentation section).
+- **Colours and theme**: tokens in `src/index.css`, fine-tuning in
+  `src/theme-polish.css`.
+- **"Just Released" spotlight**: `src/components/NewReleases.jsx` and
+  `src/new-releases.css`.
 
-### 4. Build for Production
-```bash
-npm run build
-```
-*The compiled assets will be outputted to the `dist/` directory, ready to be hosted.*
+### Releasing a new version
+1. Create a release with a new tag (e.g. `chat-v2.1.0`) and upload the installer.
+2. In `src/data/productsData.js` update `version`, the download `file`, `path`,
+   `size`, `sha256` and `releaseNotes`.
+3. Get the checksum in PowerShell: `Get-FileHash .\NfyniQ-Chat-Setup-2.1.0.exe`
+4. Commit and push — the site redeploys itself.
 
 ---
 
-## 🌐 Cloudflare Pages Deployment
-
-This project is configured to auto-deploy on Cloudflare Pages via GitHub integrations:
-* **Build Command**: `npm run build`
-* **Output Directory**: `dist`
-* **Compatibility Flags**: `nodejs_compat`
-* **Deploy Command**: `npx wrangler pages deploy dist`
-
-*Any push to the `main` branch of this repository automatically triggers a rebuild and updates the live production deployment within seconds.*
+## Contact form
+Messages are sent through Web3Forms (key in `.env`) with FormSubmit as a
+backup. The form only shows "Message sent" when a service confirms delivery;
+otherwise it shows an error with a pre-filled email button.
+FormSubmit needs a one-time activation: the first time it is used it emails
+nfyniq@gmail.com a confirmation link.
 
 ---
 
-## 📁 Binary Asset Releases
-
-To respect the private status of your core codebases while avoiding Cloudflare's **25 MB file size limit** on static assets, compiled stand-alone installation packages (InnoSetup, ZIP bundles) are hosted publicly at:
-* **Release Repo**: `https://github.com/Jerfynn/SONAR-NfyniQ`
-* **Release Target**: Version tag `v1.0.0`
+## Moving to www.nfyniq.com later
+1. Buy the domain. At the registrar add:
+   - `CNAME` `www` → `jerfynn.github.io`
+   - `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+2. Settings → Pages → Custom domain → `www.nfyniq.com` → Save → tick **Enforce HTTPS**.
+3. In `.github/workflows/deploy.yml` change `BASE_PATH: /NfyniQ/` to `BASE_PATH: /`.
+4. In `index.html` replace `https://jerfynn.github.io/NfyniQ/` with `https://www.nfyniq.com/`.
+5. Commit and push.

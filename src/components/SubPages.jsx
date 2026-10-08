@@ -28,6 +28,21 @@ export const Downloads = () => {
   const [search, setSearch] = useState('');
   const [copiedCmd, setCopiedCmd] = useState(false);
   const [selectedChangelog, setSelectedChangelog] = useState(null);
+  const [focusId, setFocusId] = useState(null);
+
+  // Arriving from a product's quick-download button: scroll to that product
+  useEffect(() => {
+    const id = sessionStorage.getItem('dl-focus');
+    if (!id) return;
+    sessionStorage.removeItem('dl-focus');
+    setFocusId(id);
+    const t = setTimeout(() => {
+      const el = document.getElementById(`dl-${id}`);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 350);
+    const t2 = setTimeout(() => setFocusId(null), 2600);
+    return () => { clearTimeout(t); clearTimeout(t2); };
+  }, []);
 
   const filteredProducts = productsData.filter(prod => {
     const matchesSearch = prod.name.toLowerCase().includes(search.toLowerCase()) || 
@@ -47,9 +62,9 @@ export const Downloads = () => {
     return matchesSearch;
   });
 
-  const handleCopyCmd = () => {
-    navigator.clipboard.writeText('iwr -useb https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/install.ps1 | iex');
-    setCopiedCmd(true);
+  const handleCopyHash = (hash) => {
+    if (navigator.clipboard) navigator.clipboard.writeText(hash);
+    setCopiedCmd(hash);
     setTimeout(() => setCopiedCmd(false), 2000);
   };
 
@@ -72,7 +87,7 @@ export const Downloads = () => {
       {/* Hero Header */}
       <div className="page-header-block" style={{ margin: '0 auto 2.5rem' }}>
         <div className="section-badge" style={{ background: 'rgba(3, 105, 161, 0.1)', color: 'var(--teal)', borderColor: 'rgba(3, 105, 161, 0.25)' }}>
-          Verified Binary Hub
+          Release Hub
         </div>
         <h1 className="page-title">Software Releases & Binaries</h1>
         <p className="page-subtitle">
@@ -109,7 +124,7 @@ export const Downloads = () => {
       {/* Modern Downloads Grid */}
       <div className="dl-cards-grid">
         {filteredProducts.map((prod) => (
-          <div key={prod.id} className="dl-software-card">
+          <div key={prod.id} id={`dl-${prod.id}`} className={`dl-software-card ${focusId === prod.id ? 'dl-focus' : ''}`}>
             {/* Card Media Header */}
             <div className="dl-card-banner">
               <img src={prod.image} alt={prod.name} className="dl-banner-img" />
@@ -124,19 +139,21 @@ export const Downloads = () => {
             <div className="dl-card-content">
               <div className="dl-card-header-row">
                 <h3 className="dl-software-title">{prod.name}</h3>
-                <span className="dl-clean-badge">
-                  <ShieldCheck size={13} style={{ color: '#10b981' }} />
-                  <span>SHA-256 Signed</span>
-                </span>
+                {prod.isNew && (
+                  <span className="dl-clean-badge dl-new-badge">
+                    <Sparkles size={13} />
+                    <span>New</span>
+                  </span>
+                )}
               </div>
 
               <p className="dl-software-desc">{prod.shortDesc}</p>
 
               {/* Security & Build Specs */}
               <div className="dl-specs-tags-row">
-                <span className="dl-spec-tag">64-bit Native</span>
-                <span className="dl-spec-tag">Standalone Portable</span>
-                <span className="dl-spec-tag">Offline Ready</span>
+                {(prod.dlTags || []).map(tag => (
+                  <span key={tag} className="dl-spec-tag">{tag}</span>
+                ))}
               </div>
 
               {/* Direct Platform Download Buttons */}
@@ -154,10 +171,9 @@ export const Downloads = () => {
                 </div>
 
                 {prod.downloads.map((dl, idx) => (
+                  <React.Fragment key={idx}>
                   <a
-                    key={idx}
                     href={dl.path}
-                    download={dl.file}
                     className="dl-direct-package-btn"
                   >
                     <div className="dl-pkg-info">
@@ -169,6 +185,15 @@ export const Downloads = () => {
                     </div>
                     <span className="dl-pkg-size">{dl.size}</span>
                   </a>
+                  {dl.sha256 && (
+                    <button type="button" className="dl-hash-row" onClick={() => handleCopyHash(dl.sha256)} title="Copy SHA-256 checksum">
+                      <ShieldCheck size={12} />
+                      <span className="dl-hash-label">SHA-256</span>
+                      <code>{dl.sha256.slice(0, 16)}…{dl.sha256.slice(-8)}</code>
+                      <span className="dl-hash-copy">{copiedCmd === dl.sha256 ? <><Check size={12} /> Copied</> : <><Copy size={12} /> Copy</>}</span>
+                    </button>
+                  )}
+                  </React.Fragment>
                 ))}
               </div>
 
@@ -233,25 +258,24 @@ export const Downloads = () => {
         </div>
       )}
 
-      {/* Quick Terminal CLI Installation Banner */}
+      {/* Install help + all releases */}
       <div className="dl-cli-terminal-banner">
         <div className="dl-cli-header">
           <div className="dl-cli-title-group">
-            <Terminal size={18} className="dl-cli-ico" />
+            <ShieldCheck size={18} className="dl-cli-ico" />
             <div>
-              <h4 className="dl-cli-title">Automated PowerShell / Terminal Quick-Fetch</h4>
-              <p className="dl-cli-desc">Install or update any NfyniQ standalone toolchain via command line.</p>
+              <h4 className="dl-cli-title">Windows says “Windows protected your PC”?</h4>
+              <p className="dl-cli-desc">
+                New apps that aren’t code-signed yet trigger SmartScreen. Click <strong>More info</strong>, then <strong>Run anyway</strong>.
+                To check a file wasn’t changed, compare its SHA-256 in PowerShell: <code>Get-FileHash .\file.exe</code>
+              </p>
             </div>
           </div>
-          <button className="dl-cli-copy-btn" onClick={handleCopyCmd}>
-            {copiedCmd ? <Check size={14} style={{ color: '#10b981' }} /> : <Copy size={14} />}
-            <span>{copiedCmd ? 'Copied to Clipboard!' : 'Copy Script'}</span>
-          </button>
+          <a className="dl-cli-copy-btn" href="https://github.com/Jerfynn/NfyniQ/releases" target="_blank" rel="noopener noreferrer">
+            <ExternalLink size={14} />
+            <span>All releases on GitHub</span>
+          </a>
         </div>
-
-        <pre className="dl-cli-code-block">
-          <code>iwr -useb https://github.com/Jerfynn/NfyniQ/releases/download/v1.0.0/install.ps1 | iex</code>
-        </pre>
       </div>
     </div>
   );
@@ -272,6 +296,13 @@ export const Documentation = () => {
   }, []);
 
   const docTopics = [
+    // NfyniQ Chat
+    { id: 'nfyniq-chat-manual', label: 'NfyniQ Chat User Manual', category: 'NfyniQ Chat' },
+    { id: 'nfyniq-chat-network', label: 'Network & Firewall Setup', category: 'NfyniQ Chat' },
+
+    // Smart Reminder Assistant
+    { id: 'smart-reminder-manual', label: 'Smart Reminder User Manual', category: 'Smart Reminder Assistant' },
+
     // Sonar Viewer / Ping Viewer
     { id: 'sonar-manual', label: 'Ping Viewer User Manual', category: 'Sonar Viewer' },
     { id: 'sonar-transducer', label: 'Transducer Calibration', category: 'Sonar Viewer' },
@@ -301,6 +332,93 @@ export const Documentation = () => {
       // ==========================================
       // SONAR VIEWER / PING VIEWER MANUALS
       // ==========================================
+      case 'nfyniq-chat-manual':
+        return (
+          <>
+            <h3 className="doc-section-title">NfyniQ Chat — User Manual</h3>
+            <p>NfyniQ Chat lets you message and share files with everyone on the same Wi-Fi or wired network. It needs no internet connection and no account — messages and files travel directly between computers.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>1. Install</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Download <code>NfyniQ-Chat-Setup-2.0.0.exe</code> from the Downloads page and run it.</li>
+              <li>If Windows shows <strong>“Windows protected your PC”</strong>, click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
+              <li>On first launch Windows asks about the firewall. Tick <strong>Private networks</strong> and click <strong>Allow</strong>.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>2. Getting started</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Type your name once. Everyone else on the network who has the app open appears in your chat list, with a green dot when online.</li>
+              <li><strong>Everyone</strong> is a shared room for the whole network. Click a person to chat one-to-one.</li>
+            </ul>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>3. Sending files</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Drag files into a chat, or click the paperclip. Any size works; progress shows on the bubble.</li>
+              <li>Received files land in your Downloads folder. Use <strong>Open</strong> or <strong>Show in folder</strong> on the message.</li>
+            </ul>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>4. Everyday features</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Hover a message to <strong>reply</strong> or <strong>forward</strong> it. Ticks show when a message is delivered.</li>
+              <li><kbd>Ctrl</kbd>+<kbd>K</kbd> jumps to search. The moon/sun button switches between light and dark themes.</li>
+              <li>Desktop notifications appear for new messages when the window is in the background.</li>
+            </ul>
+          </>
+        );
+
+      case 'nfyniq-chat-network':
+        return (
+          <>
+            <h3 className="doc-section-title">NfyniQ Chat — Network & Firewall Setup</h3>
+            <p>If colleagues don’t appear in your list, work through these checks in order.</p>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Same network:</strong> everyone must be on the same Wi-Fi or LAN (guest networks are often isolated).</li>
+              <li><strong>Private network profile:</strong> in Windows Settings → Network & internet → your Wi-Fi → set the network profile to <strong>Private</strong>.</li>
+              <li><strong>Firewall:</strong> allow NfyniQ Chat on Private networks (Windows Security → Firewall → Allow an app through firewall).</li>
+              <li><strong>Add by IP:</strong> some office networks block discovery between devices. Ask your colleague for the IP shown in their app and use <strong>Add someone by IP address</strong>.</li>
+            </ol>
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Ports used</h4>
+            <pre className="doc-code-block">{`UDP 41234   discovery beacon (finding people on the network)
+TCP 50505   messages and file transfers`}</pre>
+            <p>Traffic never leaves your local network.</p>
+          </>
+        );
+
+      case 'smart-reminder-manual':
+        return (
+          <>
+            <h3 className="doc-section-title">Smart Reminder Assistant — User Manual</h3>
+            <p>Smart Reminder Assistant turns a quick sentence into a reminder. When it’s due, an animated companion drops in on a silk thread to tell you.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>1. Install</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Download <code>Smart-Reminder-Assistant-Setup-1.2.0.exe</code> and run it.</li>
+              <li>If SmartScreen appears, click <strong>More info</strong> → <strong>Run anyway</strong>.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>2. Writing reminders</h4>
+            <p>Type into the box the way you would say it, then press Enter:</p>
+            <pre className="doc-code-block">{`stretch in 45 min
+standup at 4:30 pm
+call the supplier tomorrow at 11am
+every 30 mins: eye break`}</pre>
+            <p>The app works out the time, picks an icon (water, eyes, movement, meetings and more), and sets repeats for phrases like <em>every 30 mins</em>.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>3. When a reminder is due</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Your companion drops in with the reminder. Choose <strong>Done</strong>, <strong>5 min</strong> or <strong>15 min</strong> to snooze.</li>
+              <li>Pick your companion — <strong>Sparky</strong>, <strong>Mochi</strong>, <strong>Weaver</strong> or <strong>Dash</strong> — plus its size, screen corner and how it arrives, in the dashboard.</li>
+            </ul>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>4. Running in the background</h4>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Closing the window keeps the app running in the system tray, so reminders still fire.</li>
+              <li>Press <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>R</kbd> anywhere to open the reminder box.</li>
+              <li>Right-click the tray icon to turn <strong>start with Windows</strong> on or off, or to quit.</li>
+            </ul>
+          </>
+        );
+
       case 'sonar-manual':
         return (
           <>

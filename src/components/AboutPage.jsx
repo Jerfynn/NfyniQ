@@ -76,7 +76,7 @@ const AboutPage = ({ onNavigateTab }) => {
 
           <div className="about-stats-col">
             <div className="about-stat-box">
-              <span className="stat-big-num">4+</span>
+              <span className="stat-big-num">6</span>
               <span className="stat-big-label">Commercial Software Suites</span>
             </div>
             <div className="about-stat-box">

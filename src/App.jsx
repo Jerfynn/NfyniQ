@@ -28,6 +28,8 @@ import {
   Search
 } from 'lucide-react';
 import './App.css';
+import './theme-polish.css';
+import brandMark from './assets/brand-mark.svg';
 
 function App() {
   // Navigation tabs: 'home', 'products', 'services', 'solutions', 'downloads', 'documentation', 'about', 'contact'
@@ -190,7 +192,7 @@ function App() {
           <div className="nav-brand-area" onClick={() => navigateTo('home')}>
             <div className="nav-logo">
               <div className="nav-logo-icon-box">
-                <Terminal className="nav-logo-icon" />
+                <img src={brandMark} alt="" width="36" height="36" />
               </div>
               <div className="nav-logo-text-group">
                 <span className="brand-name">NfyniQ</span>
@@ -262,11 +264,11 @@ function App() {
             <button 
               className="nav-search-trigger-btn"
               onClick={() => setIsCommandPaletteOpen(true)}
-              title="Search portal (Ctrl+K / ⌘K)"
+              title="Search (Ctrl+K)"
             >
               <Search size={14} />
               <span className="nav-search-text">Search...</span>
-              <kbd className="nav-search-kbd">⌘K</kbd>
+              <kbd className="nav-search-kbd">Ctrl K</kbd>
             </button>
 
             <button className="nav-get-in-touch-btn" onClick={() => navigateTo('contact')}>
@@ -302,7 +304,7 @@ function App() {
           >
             <Search size={16} />
             <span>Search software & manuals...</span>
-            <kbd className="nav-search-kbd">⌘K</kbd>
+            <kbd className="nav-search-kbd">Ctrl K</kbd>
           </button>
 
           <div className="mobile-drawer-links">
@@ -358,7 +360,7 @@ function App() {
               {/* Brand Col */}
               <div className="footer-col footer-col-brand">
                 <div className="footer-logo" onClick={() => navigateTo('home')}>
-                  <Terminal size={20} className="footer-logo-icon" />
+                  <img src={brandMark} alt="" width="24" height="24" />
                   <span className="footer-brand-title">NfyniQ</span>
                 </div>
                 <p className="footer-brand-bio">
@@ -417,7 +419,7 @@ function App() {
             {/* Bottom Copyright Strip */}
             <div className="footer-bottom-bar">
               <div className="footer-copyright-text">
-                © {new Date().getFullYear()} NfyniQ Technologies. All rights reserved. Built for mission-critical reliability.
+                © {new Date().getFullYear()} NfyniQ Technologies. All rights reserved.
               </div>
               <div className="footer-bottom-tags">
                 <span>Desktop</span>

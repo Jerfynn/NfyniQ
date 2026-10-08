@@ -44,7 +44,7 @@ const CanvasBackground = () => {
       draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(79, 70, 229, ${this.alpha})`; // Indigo twinkling stars
+        ctx.fillStyle = `rgba(125, 211, 252, ${this.alpha})`; // Indigo twinkling stars
         ctx.fill();
       }
     }
@@ -56,7 +56,7 @@ const CanvasBackground = () => {
         this.vx = (Math.random() - 0.5) * 0.3;
         this.vy = (Math.random() - 0.5) * 0.3;
         this.radius = Math.random() * 2 + 1;
-        this.baseColor = Math.random() > 0.5 ? 'rgba(79, 70, 229, 0.12)' : 'rgba(2, 132, 199, 0.12)';
+        this.baseColor = Math.random() > 0.5 ? 'rgba(129, 140, 248, 0.22)' : 'rgba(56, 189, 248, 0.22)';
         this.color = this.baseColor;
       }
 
@@ -104,9 +104,9 @@ const CanvasBackground = () => {
           mouse.x, mouse.y, 10,
           mouse.x, mouse.y, mouse.radius
         );
-        mouseGlow.addColorStop(0, 'rgba(79, 70, 229, 0.015)');
-        mouseGlow.addColorStop(0.5, 'rgba(2, 132, 199, 0.005)');
-        mouseGlow.addColorStop(1, 'rgba(255, 255, 255, 0)');
+        mouseGlow.addColorStop(0, 'rgba(56, 189, 248, 0.05)');
+        mouseGlow.addColorStop(0.5, 'rgba(45, 212, 191, 0.015)');
+        mouseGlow.addColorStop(1, 'rgba(7, 12, 24, 0)');
         ctx.fillStyle = mouseGlow;
         ctx.beginPath();
         ctx.arc(mouse.x, mouse.y, mouse.radius, 0, Math.PI * 2);
@@ -123,7 +123,7 @@ const CanvasBackground = () => {
 
           if (dist < connectionDistance) {
             const alpha = (1 - dist / connectionDistance) * 0.07;
-            ctx.strokeStyle = `rgba(71, 85, 105, ${alpha})`;
+            ctx.strokeStyle = `rgba(125, 211, 252, ${alpha * 0.8})`;
             ctx.lineWidth = 0.55;
 
             // Highlight connections close to the mouse spotlight
@@ -133,7 +133,7 @@ const CanvasBackground = () => {
               const mdist1 = Math.sqrt(mdx1 * mdx1 + mdy1 * mdy1);
 
               if (mdist1 < mouse.radius) {
-                ctx.strokeStyle = `rgba(79, 70, 229, ${alpha * 2.2})`;
+                ctx.strokeStyle = `rgba(56, 189, 248, ${alpha * 2.2})`;
                 ctx.lineWidth = 0.8;
               }
             }

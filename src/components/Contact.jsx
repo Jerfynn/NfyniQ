@@ -80,62 +80,57 @@ const Contact = () => {
 
     const subject = `${isQuote ? '💼 [Quotation Request]' : '📩 [New Inquiry]'} from ${formData.name} - ${formData.productOrService}`;
 
-    try {
-      // 1. Direct Delivery to nfyniq@gmail.com via FormSubmit.co API
-      const response = await fetch('https://formsubmit.co/ajax/nfyniq@gmail.com', {
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      company: formData.company || 'Not Specified',
+      phone: formData.phone || 'Not Specified',
+      requirement_type: formData.requirement,
+      product_or_service: formData.productOrService,
+      message: formData.message,
+      inquiry_mode: isQuote ? 'Quotation Request' : 'Direct Inquiry'
+    };
+
+    // Only report success when a service actually confirms delivery.
+    const sendWeb3Forms = async () => {
+      const key = import.meta.env.VITE_WEB3FORMS_KEY;
+      if (!key || key.length < 10) return false;
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          _subject: subject,
-          _template: 'table',
-          _captcha: 'false',
-          name: formData.name,
-          email: formData.email,
-          company: formData.company || 'Not Specified',
-          phone: formData.phone || 'Not Specified',
-          requirement_type: formData.requirement,
-          product_or_service: formData.productOrService,
-          message: formData.message,
-          inquiry_mode: isQuote ? 'Quotation Request' : 'Direct Inquiry'
-        })
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ access_key: key, subject, from_name: `${formData.name} (NfyniQ Web)`, ...payload })
       });
+      const json = await res.json().catch(() => ({}));
+      return res.ok && json.success === true;
+    };
 
-      const result = await response.json();
+    const sendFormSubmit = async () => {
+      const res = await fetch('https://formsubmit.co/ajax/nfyniq@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ _subject: subject, _template: 'table', _captcha: 'false', ...payload })
+      });
+      const json = await res.json().catch(() => ({}));
+      return res.ok && (json.success === true || json.success === 'true');
+    };
 
-      if (response.ok && (result.success === 'true' || result.success === true || result.message)) {
+    try {
+      let delivered = false;
+      try { delivered = await sendWeb3Forms(); } catch (err) { console.warn('Web3Forms failed', err); }
+      if (!delivered) {
+        try { delivered = await sendFormSubmit(); } catch (err) { console.warn('FormSubmit failed', err); }
+      }
+      if (delivered) {
         setSubmitted(true);
       } else {
-        // Fallback to Web3Forms if FormSubmit is unavailable
-        const web3Key = import.meta.env.VITE_WEB3FORMS_KEY;
-        if (web3Key && web3Key.length > 10) {
-          const web3Res = await fetch('https://api.web3forms.com/submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({
-              access_key: web3Key,
-              subject: subject,
-              from_name: `${formData.name} (NfyniQ Web)`,
-              ...formData
-            })
-          });
-          const web3Json = await web3Res.json();
-          if (web3Json.success) {
-            setSubmitted(true);
-            return;
-          }
-        }
-        setSubmitted(true);
+        setErrorMessage('Your message could not be sent right now. Please email us directly at nfyniq@gmail.com — use the button below to open it pre-filled.');
       }
-    } catch (error) {
-      console.error('Error sending form submission:', error);
-      setSubmitted(true);
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  const mailtoHref = `mailto:nfyniq@gmail.com?subject=${encodeURIComponent(`[Inquiry] ${formData.name} - ${formData.productOrService}`)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company || 'N/A'}\nPhone: ${formData.phone || 'N/A'}\nRequirement: ${formData.requirement}\nProduct: ${formData.productOrService}\n\nMessage:\n${formData.message}`)}`;
 
   return (
     <div className="page-container">
@@ -230,10 +225,10 @@ const Contact = () => {
                   <CheckCircle size={36} />
                 </div>
                 <h3 className="success-title">
-                  {isQuoteRequest ? 'Quotation Request Transmitted!' : 'Inquiry Dispatched Successfully!'}
+                  {isQuoteRequest ? 'Quote request sent' : 'Message sent'}
                 </h3>
                 <p className="success-desc">
-                  Thank you, <strong>{formData.name || 'valued partner'}</strong>. Your inquiry for <strong>{formData.productOrService}</strong> has been transmitted to our engineering laboratory at <strong>nfyniq@gmail.com</strong>.
+                  Thank you, <strong>{formData.name || 'valued partner'}</strong>. Your message about <strong>{formData.productOrService}</strong> reached <strong>nfyniq@gmail.com</strong>. We’ll reply to <strong>{formData.email}</strong>.
                 </p>
                 <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '1rem' }}>
                   <a
@@ -386,6 +381,8 @@ const Contact = () => {
                       value={formData.productOrService}
                       onChange={handleChange}
                     >
+                      <option value="NfyniQ Chat (Offline Office Messenger)">NfyniQ Chat (Office Messenger)</option>
+                      <option value="Smart Reminder Assistant">Smart Reminder Assistant</option>
                       <option value="Sonar Viewer (Marine Software)">Sonar Viewer (Hydro-Acoustic)</option>
                       <option value="AI Embedded Studio (MCU/Edge AI)">AI Embedded Studio (Edge IDE)</option>
                       <option value="NfynDown (Media Downloader)">NfynDown (Media Downloader)</option>
@@ -460,6 +457,15 @@ const Contact = () => {
                     )}
                   </button>
                 </div>
+                {errorMessage && (
+                  <div className="contact-error-banner" role="alert">
+                    <p>{errorMessage}</p>
+                    <a href={mailtoHref} className="btn-secondary-outline" style={{ fontSize: '0.85rem', padding: '9px 16px' }}>
+                      <Mail size={14} />
+                      <span>Email nfyniq@gmail.com</span>
+                    </a>
+                  </div>
+                )}
               </form>
             )}
           </div>

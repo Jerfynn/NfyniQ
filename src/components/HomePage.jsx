@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { productsData } from '../data/productsData';
 import FAQSection from './FAQSection';
+import NewReleases from './NewReleases';
 
 const HomePage = ({ onNavigateTab, onSelectProduct }) => {
   const [activeHeroTab, setActiveHeroTab] = useState(0);
@@ -184,7 +185,7 @@ const HomePage = ({ onNavigateTab, onSelectProduct }) => {
             {/* Quick Metrics Bar */}
             <div className="hero-metrics-bar">
               <div className="metric-item">
-                <span className="metric-value">4+</span>
+                <span className="metric-value">{productsData.length}</span>
                 <span className="metric-label">Software Suites</span>
               </div>
               <div className="metric-divider"></div>
@@ -256,13 +257,16 @@ const HomePage = ({ onNavigateTab, onSelectProduct }) => {
         </div>
       </section>
 
+      {/* 1b. JUST RELEASED SPOTLIGHT */}
+      <NewReleases onSelectProduct={onSelectProduct} />
+
       {/* 2. DEDICATED PRODUCTS SECTION (EQUAL 4-PRODUCT GRID) */}
       <section id="products-section" className="section-container products-section-block">
         <div className="section-header-centered">
           <div className="section-badge">Technology Products</div>
           <h2 className="section-title">Engineered Products & Platforms</h2>
           <p className="section-subtitle">
-            Explore our suite of specialized software products engineered in-house for hydro-acoustics, embedded AI development, media streaming, and high-throughput pipelines.
+            Explore our suite of software engineered in-house — from offline team messaging and smart reminders to hydro-acoustics, embedded AI and media.
           </p>
         </div>
 
@@ -306,7 +310,7 @@ const HomePage = ({ onNavigateTab, onSelectProduct }) => {
                     className="btn-quick-dl"
                     title="Downloads & Manuals"
                     onClick={() => {
-                      sessionStorage.setItem('active-doc-topic', prod.docId);
+                      sessionStorage.setItem('dl-focus', prod.id);
                       onNavigateTab('downloads');
                     }}
                   >
