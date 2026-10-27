@@ -59,6 +59,9 @@ export const Downloads = () => {
     if (selectedOS === 'Linux') {
       return matchesSearch && prod.downloads.some(d => d.name.toLowerCase().includes('linux'));
     }
+    if (selectedOS === 'Android') {
+      return matchesSearch && prod.downloads.some(d => d.name.toLowerCase().includes('android'));
+    }
     return matchesSearch;
   });
 
@@ -98,7 +101,7 @@ export const Downloads = () => {
       {/* Interactive Filter & Search Controls */}
       <div className="dl-controls-bar">
         <div className="dl-os-pills">
-          {['All', 'Windows', 'macOS', 'Linux'].map((os) => (
+          {['All', 'Windows', 'Android', 'macOS', 'Linux'].map((os) => (
             <button
               key={os}
               className={`dl-os-pill-btn ${selectedOS === os ? 'active' : ''}`}
@@ -298,6 +301,7 @@ export const Documentation = () => {
   const docTopics = [
     // NfyniQ Chat
     { id: 'nfyniq-chat-manual', label: 'NfyniQ Chat User Manual', category: 'NfyniQ Chat' },
+    { id: 'nfyniq-chat-phones', label: 'Phones (Android & iPhone)', category: 'NfyniQ Chat' },
     { id: 'nfyniq-chat-network', label: 'Network & Firewall Setup', category: 'NfyniQ Chat' },
 
     // Smart Reminder Assistant
@@ -335,34 +339,68 @@ export const Documentation = () => {
       case 'nfyniq-chat-manual':
         return (
           <>
-            <h3 className="doc-section-title">NfyniQ Chat — User Manual</h3>
-            <p>NfyniQ Chat lets you message and share files with everyone on the same Wi-Fi or wired network. It needs no internet connection and no account — messages and files travel directly between computers.</p>
+            <h3 className="doc-section-title">NfyniQ Chat 2.2 — User Manual</h3>
+            <p>NfyniQ Chat lets everyone on the same Wi-Fi or wired network message, share files and share screens. It needs no internet connection and no account — everything travels directly between devices on your network.</p>
 
-            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>1. Install</h4>
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>1. Install on Windows</h4>
             <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
-              <li>Download <code>NfyniQ-Chat-Setup-2.0.0.exe</code> from the Downloads page and run it.</li>
+              <li>Download <code>NfyniQ-Chat-Setup-2.2.0.exe</code> from the Downloads page and run it.</li>
               <li>If Windows shows <strong>“Windows protected your PC”</strong>, click <strong>More info</strong>, then <strong>Run anyway</strong>.</li>
               <li>On first launch Windows asks about the firewall. Tick <strong>Private networks</strong> and click <strong>Allow</strong>.</li>
             </ol>
 
             <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>2. Getting started</h4>
             <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
-              <li>Type your name once. Everyone else on the network who has the app open appears in your chat list, with a green dot when online.</li>
-              <li><strong>Everyone</strong> is a shared room for the whole network. Click a person to chat one-to-one.</li>
+              <li>Type your name once. Everyone else on the network with the app open appears in your list, with a green dot when online.</li>
+              <li><strong>Everyone</strong> is a room for the whole network. Click a person to chat one-to-one, or create a <strong>group</strong> for a team.</li>
+              <li>Chats between computers are <strong>end-to-end encrypted</strong> — the lock next to a name confirms it.</li>
             </ul>
 
-            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>3. Sending files</h4>
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>3. Sharing</h4>
             <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
-              <li>Drag files into a chat, or click the paperclip. Any size works; progress shows on the bubble.</li>
-              <li>Received files land in your Downloads folder. Use <strong>Open</strong> or <strong>Show in folder</strong> on the message.</li>
+              <li><strong>Files and folders:</strong> drag them into a chat or click the paperclip. Any size works; progress shows on the bubble.</li>
+              <li><strong>Screenshots:</strong> copy one and press <kbd>Ctrl</kbd>+<kbd>V</kbd> in the message box.</li>
+              <li><strong>Voice messages:</strong> tap the microphone button to record and send a voice note.</li>
+              <li><strong>Screen sharing:</strong> click the screen icon at the top of a chat. A red bar shows while you’re sharing; click <strong>Stop</strong> to end.</li>
             </ul>
 
-            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>4. Everyday features</h4>
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>4. Urgent alerts</h4>
+            <p>For things that can’t wait — “pressure test starting, clear the bay” — send an <strong>urgent alert</strong>. It fills the recipient’s screen until they tap <strong>Got it</strong>. Use it sparingly.</p>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>5. Everyday features</h4>
             <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
-              <li>Hover a message to <strong>reply</strong> or <strong>forward</strong> it. Ticks show when a message is delivered.</li>
-              <li><kbd>Ctrl</kbd>+<kbd>K</kbd> jumps to search. The moon/sun button switches between light and dark themes.</li>
-              <li>Desktop notifications appear for new messages when the window is in the background.</li>
+              <li>Hover or long-press a message to <strong>reply</strong>, <strong>react</strong>, <strong>forward</strong>, <strong>pin</strong>, <strong>edit</strong> or delete it.</li>
+              <li><kbd>Ctrl</kbd>+<kbd>K</kbd> searches chats and messages. Wrap code in triple backticks to format it.</li>
+              <li>The moon/sun button switches light and dark themes.</li>
             </ul>
+          </>
+        );
+
+      case 'nfyniq-chat-phones':
+        return (
+          <>
+            <h3 className="doc-section-title">NfyniQ Chat — Phones</h3>
+            <p>Phones join NfyniQ Chat through a PC that’s running it on the same Wi-Fi. There are two ways to use a phone:</p>
+            <ul style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li><strong>Link your own phone</strong> — use NfyniQ on the phone <em>as yourself</em>, with the same chats, history and groups as your PC, kept in sync.</li>
+              <li><strong>Invite someone new</strong> — for a person without a computer. They pick their own name and join as a separate person. Their messages wait on the PC until their phone picks them up.</li>
+            </ul>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Android</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>Download <code>NfyniQ-Chat-2.2.0.apk</code> on the phone from the Downloads page and open it.</li>
+              <li>If Android asks, allow your browser to <strong>install unknown apps</strong>, then tap <strong>Install</strong>.</li>
+              <li>On the PC, click the <strong>Phones</strong> icon in the sidebar. In the app, choose <strong>This is my phone</strong> and scan the QR code or type the 6-digit code.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>iPhone</h4>
+            <ol style={{ paddingLeft: '1.25rem', marginBottom: '1rem', lineHeight: '1.6' }}>
+              <li>On the PC, open <strong>Phones</strong> and point the iPhone camera at the QR code.</li>
+              <li>Open the link in Safari, then tap <strong>Share → Add to Home Screen</strong>. NfyniQ now opens like an app.</li>
+            </ol>
+
+            <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Keep it safe</h4>
+            <p>The link QR code and 6-digit code sign in <strong>as you</strong>, so don’t share them. The code expires after 10 minutes. You can see and unlink your phones from the same Phones panel on the PC.</p>
           </>
         );
 
@@ -379,8 +417,9 @@ export const Documentation = () => {
             </ol>
             <h4 style={{ marginTop: '1.5rem', marginBottom: '0.5rem', color: 'var(--teal)', fontWeight: '700' }}>Ports used</h4>
             <pre className="doc-code-block">{`UDP 41234   discovery beacon (finding people on the network)
-TCP 50505   messages and file transfers`}</pre>
-            <p>Traffic never leaves your local network.</p>
+TCP 50505   messages and file transfers
+TCP 50600   phones (Android app / iPhone home-screen app)`}</pre>
+            <p>Traffic never leaves your local network. If phones can’t connect, check that the PC allows port 50600 on Private networks and that the phone isn’t on a guest Wi-Fi.</p>
           </>
         );
 

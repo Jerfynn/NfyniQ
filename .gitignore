@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Installers live in GitHub Releases, never in the repo
+*.exe
+*.apk
+*.msi
+*.dmg
+*.deb

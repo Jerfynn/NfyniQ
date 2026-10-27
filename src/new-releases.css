@@ -180,3 +180,31 @@
   .nr-silk { height: calc(var(--drop) * 0.7 + 10px); }
   .nr-crew-hint { position: static; grid-column: 1 / -1; justify-content: flex-end; margin-top: 10px; }
 }
+
+/* ---------- NfyniQ Chat 2.2: desktop + phone ---------- */
+.nr-tag {
+  display: inline-block; vertical-align: middle; margin-left: 6px; transform: translateY(-2px);
+  font-family: var(--font-sans); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.01em;
+  padding: 3px 9px; border-radius: 999px;
+  color: #D9D3FF; background: rgba(123, 107, 255, 0.18); border: 1px solid rgba(123, 107, 255, 0.4);
+}
+.nr-points-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 1rem; }
+.nr-btn-chat-alt {
+  background: rgba(123, 107, 255, 0.14); border: 1px solid rgba(123, 107, 255, 0.45); color: #EDEAFF;
+}
+.nr-btn-chat-alt:hover { background: rgba(123, 107, 255, 0.24); }
+.nr-chat-shot { overflow: visible; border-radius: 14px 0 0 0; }
+.nr-chat-shot > img { border-radius: 14px 0 0 0; aspect-ratio: 1240 / 760; object-position: top left; }
+.nr-phone {
+  position: absolute; left: -10px; bottom: -1px; width: 31%; max-width: 180px;
+  border-radius: 22px 22px 0 0; overflow: hidden;
+  border: 5px solid #1A1640; border-bottom: 0;
+  box-shadow: 0 -10px 40px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(123, 107, 255, 0.35);
+  background: #fff;
+}
+.nr-phone img { display: block; width: 100%; height: auto; aspect-ratio: 390 / 640; object-fit: cover; object-position: top; }
+@media (max-width: 520px) {
+  .nr-points-grid { grid-template-columns: 1fr; }
+  .nr-phone { width: 36%; border-width: 4px; border-radius: 16px 16px 0 0; }
+  .nr-net-pill { display: none; }
+}

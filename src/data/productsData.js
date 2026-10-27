@@ -8,9 +8,11 @@ import musicSetup from '../assets/products/music_setup.webp';
 import sonarRadar from '../assets/products/sonar_radar.webp';
 import sonarDashboard from '../assets/products/sonar_dashboard.webp';
 
-import chatLight from '../assets/products/chat_light.webp';
-import chatDark from '../assets/products/chat_dark.webp';
 import chatIcon from '../assets/products/icon_chat.png';
+import chatDesktop22 from '../assets/products/chat_v22_desktop.webp';
+import chatPhones22 from '../assets/products/chat_v22_phones.webp';
+import chatScreenShare22 from '../assets/products/chat_v22_screen_share.webp';
+import chatUrgent22 from '../assets/products/chat_v22_urgent_alert.webp';
 import reminderDashboard from '../assets/products/reminder_dashboard.webp';
 import reminderCompanions from '../assets/products/reminder_companions.webp';
 import reminderIcon from '../assets/products/icon_reminder.png';
@@ -24,45 +26,49 @@ export const productsData = [
     isNew: true,
     icon: chatIcon,
     accent: '#6C5CFA',
-    tagline: 'Offline Office Messenger & File Sharing',
-    shortDesc: 'Message and share files with everyone on the same Wi-Fi — no internet, no accounts, nothing uploaded to a server.',
-    keyCapability: 'Automatic discovery of people on your local network, direct computer-to-computer messages, and file transfers of any size.',
+    tagline: 'Offline Office Messenger for Windows & Android',
+    shortDesc: 'Encrypted chat, file sharing and screen sharing over your own Wi-Fi — now with an Android app. No internet, no accounts, nothing uploaded to a server.',
+    keyCapability: 'End-to-end encrypted messaging between PCs, linked phones that share your PC chats, screen sharing and full-screen urgent alerts.',
     category: 'Local Network Communication',
-    version: 'v2.0.0',
-    badge: 'New Release',
-    image: chatDark,
-    gallery: [chatDark, chatLight],
-    overview: 'NfyniQ Chat is a desktop messenger for teams that share a network. Everyone who opens the app on the same Wi-Fi or LAN shows up automatically. Messages and files travel straight between computers over the local network, so it works with no internet connection and nothing ever leaves the office. Type your name once and you are live — there are no accounts or servers to set up.',
+    version: 'v2.2.0',
+    badge: 'Now on Android',
+    image: chatDesktop22,
+    gallery: [chatDesktop22, chatPhones22, chatScreenShare22, chatUrgent22],
+    overview: 'NfyniQ Chat is a messenger for teams that share a network. Everyone who opens it on the same Wi-Fi or LAN shows up automatically, and messages, files and screens travel straight between devices — it works with the internet switched off and nothing ever leaves the building. Version 2.2 adds end-to-end encryption between computers, screen sharing, urgent full-screen alerts, groups and voice messages, plus phones: link your own phone to use the same chats as your PC, or invite someone without a computer to join from theirs.',
     features: [
-      'Automatic discovery of everyone on the same Wi-Fi or wired network, with live online status',
-      'Direct one-to-one chats plus an "Everyone" room for the whole network',
-      'Drag-and-drop file sharing of any size with live progress, Open and Show in folder',
-      'Replies, forwarding, typing indicators and delivered ticks',
-      'Desktop notifications, light and dark themes, and Ctrl+K chat search',
-      'Add someone by IP address when the network blocks automatic discovery'
+      'End-to-end encrypted messages between computers (X25519 key exchange, AES-256-GCM)',
+      'Android app: link your phone to your PC with a QR code or 6-digit code — same chats, kept in sync',
+      'Invite people without a computer to join from their phone as themselves',
+      'Screen sharing: show your screen to a colleague with one click, full-screen on their side',
+      'Urgent alerts that take over the recipient’s screen until they tap Got it',
+      'Groups, voice messages, reactions, pinned and edited messages',
+      'Send files and whole folders of any size; paste screenshots with Ctrl+V',
+      'Search chats and messages, code formatting, light and dark themes'
     ],
     applications: [
-      'Office teams sharing CAD files, logs and documents without cloud uploads',
-      'Labs, workshops and field sites with no internet connection',
-      'Air-gapped or privacy-sensitive networks where data must stay local',
-      'Classrooms and events that need a quick shared chat room'
+      'Workshops and labs passing logs, CAD files and photos between PCs and phones',
+      'Test bays and field sites that need instant alerts with no internet',
+      'Showing a colleague your screen across the office without a meeting link',
+      'Air-gapped or privacy-sensitive networks where data must stay local'
     ],
     techSpecs: {
-      'Architecture': 'Electron desktop application',
+      'Encryption': 'X25519 + AES-256-GCM between computers',
       'Discovery': 'UDP broadcast beacon on port 41234',
-      'Messaging & Files': 'Direct TCP connections (port 50505)',
+      'Messages & Files': 'Direct TCP connections (port 50505)',
+      'Phone Link': 'Wi-Fi connection to a PC running NfyniQ Chat (port 50600)',
       'Internet Required': 'No — works entirely on the local network',
-      'Supported OS': 'Windows 10/11 (x64)'
+      'Supported OS': 'Windows 10/11 (x64), Android 5.1+'
     },
     downloads: [
-      { name: 'Windows Installer (.exe)', file: 'NfyniQ-Chat-Setup-2.0.0.exe', size: '77.7 MB', path: `${RELEASES}/chat-v2.0.0/NfyniQ-Chat-Setup-2.0.0.exe`, sha256: 'b9c4de72d9a5eb854fbf097fdf956046b38a5211e58beed950633badd3d63de2' }
+      { name: 'Windows Installer (.exe)', file: 'NfyniQ-Chat-Setup-2.2.0.exe', size: '78.2 MB', path: `${RELEASES}/chat-v2.2.0/NfyniQ-Chat-Setup-2.2.0.exe`, sha256: '13b16981b37daa37ffc1d359a5fc75376e1e8936956a6090578f61c81601a044' },
+      { name: 'Android App (.apk)', file: 'NfyniQ-Chat-2.2.0.apk', size: '3.9 MB', path: `${RELEASES}/chat-v2.2.0/NfyniQ-Chat-2.2.0.apk`, sha256: '4d0525970362fe4e95cf48c4a30162389d5264dfec3fb32d4dfa1cb7e874b129' }
     ],
-    dlTags: ['Windows 10/11 x64', 'Installer', 'Works Offline'],
+    dlTags: ['Windows 10/11 x64', 'Android 5.1+', 'Works Offline'],
     releaseNotes: [
-      'Renamed from LAN Chat to NfyniQ Chat with a new identity and icon',
-      'Everyone room for messaging the whole network at once',
-      'Replies, forwarding, typing indicators and delivered ticks',
-      'Light and dark themes that follow your Windows setting'
+      'New Android app — link your phone to your PC, or invite someone who has no computer',
+      'End-to-end encryption between computers',
+      'Screen sharing and full-screen urgent alerts',
+      'Groups, voice messages, reactions, pins, edits and folder sharing'
     ],
     docId: 'nfyniq-chat-manual'
   },

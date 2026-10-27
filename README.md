@@ -43,7 +43,7 @@ must match exactly (dots, not underscores).
 
 | Product | Release tag | File name |
 |---|---|---|
-| NfyniQ Chat | `chat-v2.0.0` | `NfyniQ-Chat-Setup-2.0.0.exe` |
+| NfyniQ Chat 2.2 | `chat-v2.2.0` | `NfyniQ-Chat-Setup-2.2.0.exe` **and** `NfyniQ-Chat-2.2.0.apk` (both in the same release) |
 | Smart Reminder Assistant | `reminder-v1.2.0` | `Smart-Reminder-Assistant-Setup-1.2.0.exe` |
 | Sonar Viewer, AI Embedded Studio, NfynDown, NfyniQ Music | `v1.0.0` | `SonarViewer_Setup.exe`, `sonarviewer-macos-app.zip`, `sonarviewer-linux-deb.zip`, `AI_Embedded_Studio.exe`, `NfynDown.exe`, `NfyniQ_Music_Setup.exe` |
 
@@ -55,7 +55,7 @@ Repo → **Releases** → **Draft a new release** → Choose a tag → type the 
 Or with the GitHub CLI:
 
 ```bash
-gh release create chat-v2.0.0 NfyniQ-Chat-Setup-2.0.0.exe --repo Jerfynn/NfyniQ --title "NfyniQ Chat 2.0.0"
+gh release create chat-v2.2.0 NfyniQ-Chat-Setup-2.2.0.exe NfyniQ-Chat-2.2.0.apk --repo Jerfynn/NfyniQ --title "NfyniQ Chat 2.2.0"
 gh release create reminder-v1.2.0 Smart-Reminder-Assistant-Setup-1.2.0.exe --repo Jerfynn/NfyniQ --title "Smart Reminder Assistant 1.2.0"
 ```
 
@@ -101,6 +101,6 @@ nfyniq@gmail.com a confirmation link.
    - `CNAME` `www` → `jerfynn.github.io`
    - `A` `@` → `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
 2. Settings → Pages → Custom domain → `www.nfyniq.com` → Save → tick **Enforce HTTPS**.
-3. In `.github/workflows/deploy.yml` change `BASE_PATH: /NfyniQ/` to `BASE_PATH: /`.
+3. Nothing to change in the build: the site uses relative paths (`BASE_PATH: ./`), so it works on both addresses.
 4. In `index.html` replace `https://jerfynn.github.io/NfyniQ/` with `https://www.nfyniq.com/`.
 5. Commit and push.

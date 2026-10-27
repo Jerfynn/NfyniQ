@@ -15,8 +15,8 @@ const FAQSection = () => {
       answer: 'That is Windows SmartScreen, which warns about any new app that is not code-signed yet. Click More info, then Run anyway. To confirm the file is exactly what we published, compare its SHA-256 checksum (shown on the Downloads page) with the output of Get-FileHash in PowerShell.'
     },
     {
-      question: 'Does NfyniQ Chat need the internet or a server?',
-      answer: 'No. NfyniQ Chat works entirely on your local Wi-Fi or wired network. Messages and files travel directly between computers and are never uploaded anywhere. Everyone just needs to be on the same network and allow the app through the Windows firewall on Private networks.'
+      question: 'Does NfyniQ Chat need the internet or a server? Can I use it on my phone?',
+      answer: 'No internet or server needed. NfyniQ Chat works entirely on your local Wi-Fi or wired network, and messages between computers are end-to-end encrypted. For phones, install the Android app (or add it to your iPhone home screen from Safari) and link it to a PC running NfyniQ Chat on the same Wi-Fi — open Phones on the PC and scan the QR code.'
     },
     {
       question: 'Can NfyniQ engineer custom hardware drivers, sensor pipelines, or telemetry software for our project?',

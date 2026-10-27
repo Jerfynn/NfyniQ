@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Download, ChevronRight, Wifi, WifiOff, FileUp, Users, Clock, Repeat, MousePointerClick } from 'lucide-react';
+import { Download, ChevronRight, Wifi, Clock, Repeat, MousePointerClick, Lock, Smartphone, ScreenShare, Siren, Monitor } from 'lucide-react';
+import chatPhoneShot from '../assets/products/chat_v22_phone_single.webp';
 import { productsData } from '../data/productsData';
 import mascots from '../data/mascots.json';
 import '../mascots.css';
@@ -49,9 +50,9 @@ const NewReleases = ({ onSelectProduct }) => {
     <section className="nr-section section-container" aria-labelledby="nr-title">
       <div className="section-header-centered">
         <div className="section-badge">Just Released</div>
-        <h2 id="nr-title" className="section-title">Two new apps for your Windows desk</h2>
+        <h2 id="nr-title" className="section-title">New for your desk, and now your pocket</h2>
         <p className="section-subtitle">
-          A messenger that never needs the internet, and a reminder app with a little personality. Both free.
+          NfyniQ Chat 2.2 arrives on Android with encryption, screen sharing and urgent alerts. Smart Reminder keeps your day on track. Both free.
         </p>
       </div>
 
@@ -61,32 +62,42 @@ const NewReleases = ({ onSelectProduct }) => {
           <div className="nr-card-head">
             <img src={chat.icon} alt="" width="56" height="56" className="nr-app-icon" />
             <div>
-              <h3 className="nr-name">{chat.name}</h3>
-              <span className="nr-ver">{chat.version} for Windows 10 and 11</span>
+              <h3 className="nr-name">{chat.name} <span className="nr-tag">Now on Android</span></h3>
+              <span className="nr-ver">Version {chat.version.replace('v', '')} for Windows and Android</span>
             </div>
           </div>
 
-          <p className="nr-pitch">Text and share files with everyone on the same Wi‑Fi. No internet, no accounts — nothing leaves the building.</p>
+          <p className="nr-pitch">Chat, share files and show your screen to everyone on the same Wi‑Fi. No internet, no accounts — nothing leaves the building.</p>
 
-          <ul className="nr-points">
-            <li><WifiOff size={16} /><span>Works with the internet switched off</span></li>
-            <li><Users size={16} /><span>People nearby appear on their own</span></li>
-            <li><FileUp size={16} /><span>Drag in files of any size</span></li>
+          <ul className="nr-points nr-points-grid">
+            <li><Lock size={16} /><span>Encrypted between PCs</span></li>
+            <li><Smartphone size={16} /><span>Your PC chats on your phone</span></li>
+            <li><ScreenShare size={16} /><span>Share your screen in one click</span></li>
+            <li><Siren size={16} /><span>Urgent alerts that can’t be missed</span></li>
           </ul>
 
           <div className="nr-actions">
             <a className="nr-btn nr-btn-chat" href={chat.downloads[0].path}>
-              <Download size={17} />
-              <span>Download<small>{chat.downloads[0].size}</small></span>
+              <Monitor size={17} />
+              <span>Windows<small>{chat.downloads[0].size}</small></span>
             </a>
+            {chat.downloads[1] && (
+              <a className="nr-btn nr-btn-chat-alt" href={chat.downloads[1].path}>
+                <Smartphone size={17} />
+                <span>Android<small>{chat.downloads[1].size}</small></span>
+              </a>
+            )}
             <button type="button" className="nr-btn-ghost" onClick={() => onSelectProduct(chat)}>
               <span>Details</span><ChevronRight size={15} />
             </button>
           </div>
 
           <div className="nr-chat-shot">
-            <div className="nr-net-pill"><Wifi size={13} /><span>3 online on this network</span></div>
-            <img src={chat.gallery[0]} alt="NfyniQ Chat showing a conversation where CAD and CSV files were shared over the local network" loading="lazy" />
+            <img src={chat.gallery[0]} alt="NfyniQ Chat 2.2 on Windows: an encrypted chat with a code snippet, a shared screenshot and a shared folder" loading="lazy" />
+            <div className="nr-phone" aria-hidden="true">
+              <img src={chatPhoneShot} alt="" loading="lazy" />
+            </div>
+            <div className="nr-net-pill"><Wifi size={13} /><span>PC and phone on the same Wi‑Fi</span></div>
           </div>
         </article>
 
@@ -108,7 +119,7 @@ const NewReleases = ({ onSelectProduct }) => {
             <img src={reminder.icon} alt="" width="56" height="56" className="nr-app-icon" />
             <div>
               <h3 className="nr-name">{reminder.name}</h3>
-              <span className="nr-ver">{reminder.version} for Windows 10 and 11</span>
+              <span className="nr-ver">Version {reminder.version.replace('v', '')} for Windows 10 and 11</span>
             </div>
           </div>
 
