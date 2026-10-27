@@ -31,6 +31,24 @@ button, input, select, textarea { font: inherit; }
 .nav-link:hover, .nav-link.active { color: #fff; }
 
 /* Hero */
+.hero-universal { padding-top: 3rem; padding-bottom: 3.5rem; }
+.hero-content-wrapper { gap: clamp(2rem, 5vw, 4.5rem); }
+.hero-headline { max-width: 12ch; font-size: clamp(2.65rem, 4.4vw, 3.8rem); line-height: 1.08; }
+.hero-subtext { max-width: 48ch; font-size: 1.02rem; }
+.hero-metrics-bar { max-width: 520px; }
+.section-container { margin-bottom: 4rem; }
+.section-header-centered { margin-bottom: 2.25rem; }
+.section-title { font-size: clamp(1.8rem, 3vw, 2.3rem); }
+.product-card-corporate { border-radius: 14px; background: rgba(12, 20, 38, 0.88); }
+.prod-card-media-wrap { height: clamp(180px, 22vw, 240px); }
+.prod-card-body { padding: 1.4rem; }
+.service-card-corporate { background: rgba(12, 20, 38, 0.72); }
+.about-strip-card { border-color: rgba(148, 178, 255, 0.14); }
+button:focus-visible, [role="button"]:focus-visible, a:focus-visible {
+  outline: 2px solid #7DD3FC;
+  outline-offset: 3px;
+}
+
 .hero-headline .gradient-accent-text,
 .gradient-accent-text {
   background: linear-gradient(100deg, #38BDF8 0%, #2DD4BF 55%, #A78BFA 100%);
@@ -123,3 +141,10 @@ select option { background: #0C1426; color: #E9EEF8; }
 }
 .mobile-menu-backdrop.open { background: rgba(3, 6, 12, 0.6) !important; }
 @media (max-width: 760px) { .nav-search-kbd { display: none; } }
+@media (max-width: 768px) {
+  .hero-universal { padding-top: 1.5rem; padding-bottom: 2.5rem; }
+  .hero-headline { max-width: none; }
+  .section-container { margin-bottom: 3rem; }
+  .prod-card-media-wrap { height: 210px; }
+  .prod-card-body { padding: 1.2rem; }
+}
